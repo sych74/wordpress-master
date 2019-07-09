@@ -19,6 +19,7 @@ globals:
   MU_REGIONS: false
   CLUSTER_TYPE: oneregion
   SUCCESS: success
+  EMAIL: default
 
 onInstall:
   - if (!${settings.ls-addon:false}):
@@ -304,6 +305,7 @@ actions:
     - setGlobals:
         CDN_URL: ${globals.PROTOCOL}://${settings.envName}-${response.response.partnerCode}.cdn.edgeport.net/
         SUCCESS: success-cdn
+        EMAIL: cdn
     - api: env.control.ExecCmdById
       envName: ${settings.envName}
       nodeId: ${globals.masterCP-ID0}
@@ -340,7 +342,7 @@ actions:
             bash ~/bin/WPCache.sh --pgcache true --objectcache true --REDIS_HOST 127.0.0.1
 
 success:
-  email: success/email/${settings.topology}/${globals.CLUSTER_TYPE}.md?_r=${fn.random}
+  email: success/email/${settings.topology}/${globals.CLUSTER_TYPE}-${globals.EMAIL}.md?_r=${fn.random}
   text: success/text/${globals.CLUSTER_TYPE}/${globals.SUCCESS}.md?_r=${fn.random}
 
 startPage: ${globals.PROTOCOL}://${settings.envName}.${globals.REGION-0}/
