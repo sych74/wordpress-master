@@ -44,7 +44,7 @@ nodes:
         sourceNodeGroup: storage
     env:
       SERVER_WEBROOT: /var/www/webroot/ROOT
-      REDIS_ENABLED: true
+      REDIS_ENABLED: TRUE
 
   - nodeType: mariadb-dockerized
     count: 3
