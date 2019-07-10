@@ -42,7 +42,7 @@ onInstall:
 
       - if ('${settings.topology}' == 'cluster'):
           setGlobals:
-            CP_NODE_TYPE: litespeedphp-redis
+            CP_NODE_TYPE: litespeedphp
             BL_NODE_TYPE: litespeedadc
             APP_CONFIGS_PATH: /var/www/webroot/TMP
 
