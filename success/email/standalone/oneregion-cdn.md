@@ -1,4 +1,4 @@
-[${globals.PROTOCOL}://${settings.envName}.${globals.REGION-0}/](${globals.PROTOCOL}://${settings.envName}.${globals.REGION-0}/)
+**WordPress environment**: [${globals.PROTOCOL}://${settings.envName}.${globals.REGION-0}/](${globals.PROTOCOL}://${settings.envName}.${globals.REGION-0}/)
 
 **CDN Endpoint URL**:  [${globals.CDN_URL}](${globals.CDN_URL})
 
