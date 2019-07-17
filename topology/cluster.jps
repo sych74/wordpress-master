@@ -70,6 +70,7 @@ nodes:
 onAfterScaleOut[nodeGroup:cp]:
   forEach(event.response.nodes):
     - log: App Servers Setup
+    - setNodeDisplayName [${@i.id}]: AppServer
     - setupNode:
         nodeId: ${@i.id}
 
@@ -88,6 +89,11 @@ onAfterClone:
 onInstall:
   - log: Auto Scaling Triggers
   - script: "${baseUrl}../scripts/addTriggers.js"
+
+  - log: Set Node Display Name
+  - setNodeDisplayName [bl]: Load balancer
+  - setNodeDisplayName [cp]: AppServer
+  - setNodeDisplayName [storage]: Storage  
 
   - setGlobals:
       DB_USER: ${settings.db_user:jelastic-[fn.random]}
