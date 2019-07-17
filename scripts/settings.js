@@ -15,10 +15,14 @@ var url = baseUrl + "/configs/settings.yaml";
 var settings = toNative(new Yaml().load(new Transport().get(url)));
 var fields = settings.fields;
 if (group.groupType == 'trial') {
-
-    fields[fields.length - 1].markup = "ARE NOT AVAILABLE FOR [" + group.groupType.toUpperCase() + "] ACCOUT";
-
+    
     fields.push({
+      "type": "displayfield",
+      "cls": "warning",
+      "height": 30,
+      "hideLabel": true,
+      "markup": "ARE NOT AVAILABLE FOR [" + group.groupType.toUpperCase() + "] ACCOUT."
+    }, {
         "type": "compositefield",
         "hideLabel": true,
         "pack": "left",
