@@ -32,16 +32,10 @@ onAfterClone:
     new_domain: ${event.response.env.domain}
 
 onInstall:
-  - api: jelastic.env.control.SetEnvDisplayName
-    displayName: WP Standalone ${settings.REGION}
-
   - setGlobals:
       DB_USER: ${settings.db_user:jelastic-[fn.random]}
       DB_PASS: ${settings.db_pass:[fn.password(10)]}
-
-  - log: Set Node Display Name
-  - setNodeDisplayName [cp]: AppServer
-
+      
   - log: Clean Webroot Directory
   - cmd[cp]: rm -rf ${SERVER_WEBROOT}/*
     
