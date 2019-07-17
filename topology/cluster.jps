@@ -50,7 +50,7 @@ nodes:
     count: 3
     cloudlets: 8
     nodeGroup: sqldb
-    displayName: Database
+    displayName: Galera cluster
     nodeGroupData:
       validation:
         maxCount: 3
@@ -69,14 +69,9 @@ nodes:
     
 onAfterScaleOut[nodeGroup:cp]:
   forEach(event.response.nodes):
-    - setNodeDisplayName [${@i.id}]: AppServer
     - log: App Servers Setup
     - setupNode:
         nodeId: ${@i.id}
-
-onAfterScaleOut[nodeGroup:bl]:
-  forEach(event.response.nodes):
-    setNodeDisplayName [${@i.id}]: Load balancer
 
 onAfterMigrate:
   install: https://raw.githubusercontent.com/sych74/wordpress-master/master/addon/Domain.jps?_r=${fn.random}
