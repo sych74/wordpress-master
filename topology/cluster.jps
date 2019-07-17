@@ -53,7 +53,7 @@ nodes:
     displayName: Galera cluster
     nodeGroupData:
       validation:
-        maxCount: 3
+        minCount: 3
     env:
       ON_ENV_INSTALL: ''
       JELASTIC_PORTS: '4567,4568,4444'
