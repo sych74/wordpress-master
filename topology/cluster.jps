@@ -51,6 +51,9 @@ nodes:
     cloudlets: 8
     nodeGroup: sqldb
     displayName: Database
+    nodeGroupData:
+      validation:
+        maxCount: 3
     env:
       ON_ENV_INSTALL: ''
       JELASTIC_PORTS: '4567,4568,4444'
@@ -59,6 +62,10 @@ nodes:
     cloudlets: 8
     nodeGroup: storage
     displayName: Storage
+    nodeGroupData:
+      validation:
+        maxCount: 1
+
     
 onAfterScaleOut[nodeGroup:cp]:
   forEach(event.response.nodes):
