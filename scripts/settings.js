@@ -21,7 +21,7 @@ if (group.groupType == 'trial') {
       "cls": "warning",
       "height": 30,
       "hideLabel": true,
-      "markup": "ARE NOT AVAILABLE FOR [" + group.groupType.toUpperCase() + "] ACCOUT."
+      "markup": "Not available for " + group.groupType + " account. Please upgrade your account."
     }, {
         "type": "compositefield",
         "hideLabel": true,
