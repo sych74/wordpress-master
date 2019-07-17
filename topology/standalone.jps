@@ -13,6 +13,7 @@ nodes:
     count: 1
     cloudlets: 16
     nodeGroup: cp
+    displayName: AppServer
     nodeGroupData:
       validation:
         maxCount: 1    
