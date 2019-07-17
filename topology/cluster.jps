@@ -98,14 +98,6 @@ onInstall:
       DB_USER: ${settings.db_user:jelastic-[fn.random]}
       DB_PASS: ${settings.db_pass:[fn.password(10)]}
 
-  - api: jelastic.env.control.SetEnvDisplayName
-    displayName: WP Cluster ${settings.REGION}
-
-  - log: Set Node Display Name
-  - setNodeDisplayName [bl]: Load balancer
-  - setNodeDisplayName [cp]: AppServer
-  - setNodeDisplayName [storage]: Storage
-
   - log: DB Galera  Setup
   - install: https://raw.githubusercontent.com/sych74/mysql-cluster/master/scripts/galera-configuration.jps
     settings:
