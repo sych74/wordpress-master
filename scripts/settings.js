@@ -76,14 +76,11 @@ if (group.groupType == 'trial') {
             "value": sslText
         }]
     }, {
-        "type": "checkbox",
-        "name": "mu-addon",
-        "caption": "muText",
-        "value": "true",
-        "width": 30,
-        "height": 20
+        type: "checkbox",
+        name: "mu-addon",
+        caption: muText,
+        value: true
 
-        
     });
 } else {
     var isCDN = jelastic.dev.apps.GetApp(cdnAppid);
