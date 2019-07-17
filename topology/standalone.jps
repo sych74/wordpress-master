@@ -13,6 +13,9 @@ nodes:
     count: 1
     cloudlets: 16
     nodeGroup: cp
+    nodeGroupData:
+      validation:
+        maxCount: 1    
     env:
       SERVER_WEBROOT: /var/www/webroot/ROOT
 
