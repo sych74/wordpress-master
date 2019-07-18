@@ -250,7 +250,7 @@ actions:
 
   setup-synchronization:
     install:
-      - jps: https://raw.githubusercontent.com/dzotic9/file-sync/master/manifest.jps?_r=${fn.random}
+      - jps: https://raw.githubusercontent.com/dzotic91-ukr/file-sync/master/manifest.jps?_r=${fn.random}
         envName: ${settings.envName}
         nodeGroup: ${globals.lsync-nodeGroup}
         skipEmail: true
@@ -260,7 +260,7 @@ actions:
           password: ${globals.SYNC_PASS}
           delay: 10
 
-      - jps: https://raw.githubusercontent.com/dzotic9/file-sync/master/manifest.jps?_r=${fn.random}
+      - jps: https://raw.githubusercontent.com/dzotic91-ukr/file-sync/master/manifest.jps?_r=${fn.random}
         envName: ${settings.envName}-1
         nodeGroup: ${globals.lsync-nodeGroup}
         skipEmail: true
@@ -273,14 +273,14 @@ actions:
   install-LE-addon:
     - if (${globals.MU_REGIONS}):
         install:
-          - jps: https://github.com/SlavaKatiukha/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
+          - jps: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
             envName: ${settings.envName}
             nodeGroup: ${globals.le-nodeGroup}
             skipEmail: true
             settings:
               customDomains: ${settings.envName}.${globals.REGION-0}
 
-          - jps: https://github.com/SlavaKatiukha/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
+          - jps: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
             envName: ${settings.envName}-1
             nodeGroup: ${globals.le-nodeGroup}
             skipEmail: true
