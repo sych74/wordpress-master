@@ -30,7 +30,7 @@ onInstall:
 
       - if ('${settings.topology}' == 'cluster'):
           setGlobals:
-            CP_NODE_TYPE: nginxphp-redis
+            CP_NODE_TYPE: nginxphp-dockerized
             BL_NODE_TYPE: nginx-dockerized
             APP_CONFIGS_PATH: /etc/nginx/conf.d/SITES_ENABLED
 
