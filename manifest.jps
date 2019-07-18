@@ -277,15 +277,11 @@ actions:
             envName: ${settings.envName}
             nodeGroup: ${globals.le-nodeGroup}
             skipEmail: true
-            settings:
-              customDomains: ${settings.envName}.${globals.REGION-0}
 
           - jps: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
             envName: ${settings.envName}-1
             nodeGroup: ${globals.le-nodeGroup}
             skipEmail: true
-            settings:
-              customDomains: ${settings.envName}-1.${globals.REGION-1}
 
     - if (!${globals.MU_REGIONS}):
         install: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
