@@ -47,6 +47,7 @@ nodes:
       REDIS_ENABLED: TRUE
 
   - nodeType: mariadb-dockerized
+    tag: 10.3.16
     count: 3
     cloudlets: 8
     nodeGroup: sqldb
