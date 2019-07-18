@@ -126,7 +126,7 @@ actions:
         envName: ${globals.envName1}
         envGroups: ${response.envGroups}
         region: ${globals.region1}
-        displayName: WP ${settings.topology} ${globals.region1}
+        displayName: WP ${settings.topology}
         settings:
           CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
           BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
