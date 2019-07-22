@@ -15,4 +15,4 @@ if (oRespTurnOn.result != 0) {
     return oRespTurnOn;
 }
 
-return jelastic.env.trigger.AddTrigger(APPID, session,'{"isEnabled":true,"name":"hs-add-nginx","nodeGroup":"cp","period":5,"condition":{"type":"LESS","value":20,"resourceType":"CPU","valueType":"PERCENTAGES"},"actions":[{"type":"REMOVE_NODE","customData":{"limit":' + (nLimitQuota - 1 || 1) + ',"count":1,"notify":true}}]}');
+return jelastic.env.trigger.AddTrigger(APPID, session,'{"isEnabled":true,"name":"hs-add-nginx","nodeGroup":"cp","period":5,"condition":{"type":"LESS","value":20,"resourceType":"CPU","valueType":"PERCENTAGES"},"actions":[{"type":"REMOVE_NODE","customData":{"limit":2,"count":1,"notify":true}}]}');
