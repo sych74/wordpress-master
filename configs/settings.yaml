@@ -37,7 +37,7 @@ fields:
 
 - caption: Load Growth
   type: list
-  name: load
+  name: loadGrowth
   default: medium
   required: true
   values:        
@@ -47,44 +47,7 @@ fields:
       caption: Medium
     - value: fast
       caption: Fast
-     
-- caption: None
-  type: list
-  name: greater
-  inputType: hidden
-  dependsOn:                 
-    load:
-      slow:
-        - value: 70
-      medium:    
-        - value: 50
-      fast:    
-        - value: 30
-- caption: None
-  type: list
-  name: less
-  inputType: hidden
-  dependsOn:                 
-    load:
-      slow:
-        - value: 20
-      medium:    
-        - value: 20
-      fast:    
-        - value: 10
-- caption: None
-  type: list
-  name: nodeCount
-  inputType: hidden
-  dependsOn:                 
-    load:
-      slow:
-        - value: 1
-      medium:    
-        - value: 1
-      fast:    
-        - value: 2
-        
+             
 - caption: Additions
   type: displayfield
   name: displayfield
