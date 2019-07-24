@@ -111,6 +111,9 @@ onInstall:
       custom_conf: "${baseUrl}../configs/sqldb/wordpress.cnf"
     nodeGroup: sqldb
 
+  - log: Load Balancer Configuration
+  - install: ${baseUrl}../scripts/setup-BL.jps?_r=${fn.random}
+
   - setupNode:
       nodeId: cp
 
