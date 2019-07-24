@@ -191,7 +191,7 @@ actions:
 
     - if ('${settings.topology}' == 'cluster'):
         - setGlobals:
-            DB_HOST: DB
+            DB_HOST: sqldb
             lsync-nodeGroup: storage
             cdn-nodeGroup: bl
             le-nodeGroup: bl
