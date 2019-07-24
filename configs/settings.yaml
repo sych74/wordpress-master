@@ -51,7 +51,6 @@ fields:
 - caption: None
   type: list
   name: greater
-  required: true
   inputType: hidden
   dependsOn:                 
     load:
@@ -64,7 +63,6 @@ fields:
 - caption: None
   type: list
   name: less
-  required: true
   inputType: hidden
   dependsOn:                 
     load:
@@ -77,7 +75,6 @@ fields:
 - caption: None
   type: list
   name: nodeCount
-  required: true
   inputType: hidden
   dependsOn:                 
     load:
