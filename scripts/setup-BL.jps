@@ -3,14 +3,6 @@ name: Load Balancer setup script
 description: This script for Load Balancer configurations
 
 onInstall:
-  - if (/nginx/.test("${nodes.bl.nodeType}"):
-      - nginx
- 
-actions:
-  nginx:
-    - cmd[bl]: |-
-        sed -i "s/$(cat /etc/nginx/nginx.conf|grep worker_rlimit_nofile)/worker_rlimit_nofile 409060;/" /etc/nginx/nginx.conf
-        sed -i "s/$(cat /etc/nginx/nginx.conf|grep worker_connections)/worker_connections 18192;/" /etc/nginx/nginx.conf
-        wget ${baseUrl}../configs/nginx/nginx.conf.tpl -O /etc/nginx/templates/nginx.conf.tpl &>> /var/log/run.log
-        rm -f /etc/nginx/nginx-jelastic.conf; jem balancer rebuildCommon
-      user: root
+  - if (/litespeed/.test("${nodes.bl.nodeType}")):
+      - wget ${baseUrl}../configs/lb/litespeed/jelastic.xml -O /var/www/conf/jelastic.xml
+      - sudo jem service restart
