@@ -91,7 +91,6 @@ fields:
 - name: wp_title
   caption: WP Title
   type: string
-  inputType: hidden
   default: HelloWorld
   required: 'true'
   regex: "^[\\w-.]*$"
