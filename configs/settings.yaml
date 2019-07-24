@@ -35,6 +35,59 @@ fields:
   showFullDomain: false
   required: true
 
+- caption: Load Growth
+  type: list
+  name: load
+  default: medium
+  required: true
+  values:        
+    - value: slow
+      caption: Slow
+    - value: medium
+      caption: Medium
+    - value: fast
+      caption: Fast
+     
+- caption: None
+  type: list
+  name: greater
+  required: true
+  inputType: hidden
+  dependsOn:                 
+    load:
+      slow:
+        - value: 70
+      medium:    
+        - value: 50
+      fast:    
+        - value: 30
+- caption: None
+  type: list
+  name: less
+  required: true
+  inputType: hidden
+  dependsOn:                 
+    load:
+      slow:
+        - value: 20
+      medium:    
+        - value: 20
+      fast:    
+        - value: 10
+- caption: None
+  type: list
+  name: nodeCount
+  required: true
+  inputType: hidden
+  dependsOn:                 
+    load:
+      slow:
+        - value: 1
+      medium:    
+        - value: 1
+      fast:    
+        - value: 2
+
 - name: wp_title
   caption: WP Title
   type: string
