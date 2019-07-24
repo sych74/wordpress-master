@@ -23,8 +23,6 @@ nodes:
     nodeGroup: cp
     scalingMode: STATELESS
     displayName: AppServer
-    links:
-      - sqldb:DB
     volumes:
       - /var/www/webroot/ROOT
       - ${globals.APP_CONFIGS_PATH}
