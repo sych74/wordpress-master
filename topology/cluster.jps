@@ -7,10 +7,8 @@ globals:
   BL_NODE_TYPE: ${settings.BL_NODE_TYPE}
   APP_CONFIGS_PATH: ${settings.APP_CONFIGS_PATH}
   REGION: ${settings.REGION}
-  SCALING_GREATER: ${settings.greater}
-  SCALING_LESS: ${settings.less}
-  SCALING_NODECOUNT: ${settings.nodeCount}
-
+  SCALING_LOAD_GROWTH: ${settings.loadGrowth}
+  
 skipNodeEmails: true
 nodes:
   - nodeType: ${globals.BL_NODE_TYPE}
@@ -91,11 +89,11 @@ onAfterClone:
 onInstall:
   - log: Auto Scaling Triggers
   - script: "${baseUrl}../scripts/addTriggers.js"
-    greater: ${globals.SCALING_GREATER}
-    less: ${globals.SCALING_LESS}
-    nodeCount: ${globals.SCALING_NODECOUNT}
+    nodeGroup: cp
+    resourceType: CPU
+    loadGrowth: ${globals.SCALING_LOAD_GROWTH}
+    cleanOldTriggers: true
     
-
   - log: Set Node Display Name
   - setNodeDisplayName [bl]: Load balancer
   - setNodeDisplayName [cp]: AppServer
