@@ -1,18 +1,64 @@
-var APPID = getParam("TARGET_APPID"),
-    nLimitQuota;
+//@auth
+//@req(nodeGroup, resourceType, cleanOldTriggers, scaleUpValue, scaleUpLimit, scaleUpLoadPeriod, scaleDownValue, scaleDownLimit, scaleNodeCount, scaleDownLoadPeriod)
 
-oQoutas = jelastic.billing.account.GetQuotas(APPID, session, ["environment.maxsamenodescount"]);
-
-if (oQoutas.result != 0) {
-    return oQoutas;
+if (cleanOldTriggers) {
+    var actions = ['ADD_NODE', 'REMOVE_NODE'];
+    for (var i = 0; i < actions.length; i++){
+        var array = jelastic.env.trigger.GetTriggers(appid, session, actions[i]).array;
+        for (var j = 0; j < array.length; j++) jelastic.env.trigger.DeleteTrigger(appid, session, array[j].id);          
+    }
 }
 
-nLimitQuota = oQoutas.array[0].value;
+resp = jelastic.env.trigger.AddTrigger('${env.envName}', session, 
+    {
+        "isEnabled": true,
+        "name": "scale-up",
+        "nodeGroup": nodeGroup,
+        "period": scaleUpLoadPeriod,
+        "condition": {
+            "type": "GREATER",
+            "value": scaleUpValue,
+            "resourceType": resourceType,
+            "valueType": "PERCENTAGES"
+        },
+        "actions": [
+            {
+                "type": "ADD_NODE",
+                "customData": {
+                    "limit": scaleUpLimit,
+                    "count": scaleNodeCount,
+                    "notify": true
+                }
+            }
+        ]
+    }
+);
 
-oRespTurnOn = jelastic.env.trigger.AddTrigger(APPID, session,'{"isEnabled":true,"name":"hs-add-nginx","nodeGroup":"cp","period":1,"condition":{"type":"GREATER","value":"${this.greater}","resourceType":"CPU","valueType":"PERCENTAGES"},"actions":[{"type":"ADD_NODE","customData":{"limit":' + nLimitQuota + ',"count":${this.nodeCount},"notify":true}}]}');
+if (resp.result != 0) return resp;
 
-if (oRespTurnOn.result != 0) {
-    return oRespTurnOn;
-}
+resp = jelastic.env.trigger.AddTrigger('${env.envName}', session,
+    {
+        "isEnabled": true,
+        "name": "scale-down",
+        "nodeGroup": nodeGroup,
+        "period": scaleDownLoadPeriod,
+        "condition": {
+            "type": "LESS",
+            "value": scaleDownValue,
+            "resourceType": resourceType,
+            "valueType": "PERCENTAGES"
+        },
+        "actions": [
+            {
+                "type": "REMOVE_NODE",
+                "customData": {
+                    "limit": scaleDownLimit,
+                    "count": 1,
+                    "notify": true
+                }
+            }
+        ]
+    }
+);
 
-return jelastic.env.trigger.AddTrigger(APPID, session,'{"isEnabled":true,"name":"hs-add-nginx","nodeGroup":"cp","period":5,"condition":{"type":"LESS","value":${this.less},"resourceType":"CPU","valueType":"PERCENTAGES"},"actions":[{"type":"REMOVE_NODE","customData":{"limit":2,"count":1,"notify":true}}]}');
+return resp;
