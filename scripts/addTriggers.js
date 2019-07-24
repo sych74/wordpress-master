@@ -1,5 +1,33 @@
 //@auth
-//@req(nodeGroup, resourceType, cleanOldTriggers, scaleUpValue, scaleUpLimit, scaleUpLoadPeriod, scaleDownValue, scaleDownLimit, scaleNodeCount, scaleDownLoadPeriod)
+//@req(nodeGroup, resourceType, cleanOldTriggers, loadGrowth)
+
+var scaleUpLoadPeriod = 1,
+    scaleDownLimit = 2,
+    scaleDownLoadPeriod = 5;
+
+var resp = jelastic.billing.account.GetQuotas('environment.maxsamenodescount');
+if (resp.result != 0) return resp;
+var scaleUpLimit = resp.array[0] && resp.array[0].value ? resp.array[0].value : 1000;
+
+if (scaleUpLimit <= scaleDownLimit) return {result:0, warning: 'autoscaling triggers have not been added due to upLimit ['+scaleUpLimit+'] <= downLimit ['+scaleDownLimit+']'}
+
+if (loadGrowth.toLowerCase() == "slow") {
+    var scaleUpValue = 70,
+        scaleDownValue = 20,
+        scaleNodeCount = 1;
+}
+
+if (loadGrowth.toLowerCase() == "medium") {
+    var scaleUpValue = 50,
+        scaleDownValue = 20,
+        scaleNodeCount = 1;
+}
+
+if (loadGrowth.toLowerCase() == "fast") {
+    var scaleUpValue = 30,
+        scaleDownValue = 10,
+        scaleNodeCount = 2;
+}
 
 if (cleanOldTriggers) {
     var actions = ['ADD_NODE', 'REMOVE_NODE'];
