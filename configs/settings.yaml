@@ -35,7 +35,7 @@ fields:
   showFullDomain: false
   required: true
 
-- caption: Load Growth
+- caption: Scaling Load Growth
   type: list
   name: loadGrowth
   default: medium
