@@ -87,15 +87,7 @@ fields:
         - value: 1
       fast:    
         - value: 2
-
-- name: wp_title
-  caption: WP Title
-  type: string
-  default: HelloWorld
-  required: 'true'
-  regex: "^[\\w-.]*$"
-  regexText: Incorrect WP Title.
-
+        
 - caption: Additions
   type: displayfield
   name: displayfield
