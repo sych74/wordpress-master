@@ -104,6 +104,8 @@ actions:
               BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
               APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
               REGION: ${globals.region1}
+              ENV_MASTER: ${globals.envName1}
+              ENV_SLAVE: ${globals.envName2}
               loadGrowth: ${settings.loadGrowth}
               db_user: ${globals.DB_USER}
               db_pass: ${globals.DB_PASS}
@@ -119,6 +121,8 @@ actions:
               BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
               APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
               REGION: ${globals.region2}
+              ENV_MASTER: ${globals.envName1}
+              ENV_SLAVE: ${globals.envName2}
               loadGrowth: ${settings.loadGrowth}
               db_user: ${globals.DB_USER}
               db_pass: ${globals.DB_PASS}
