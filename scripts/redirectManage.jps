@@ -1,7 +1,7 @@
 type: install
 name: add redirect
 
-globasls:
+globals:
   DEST_IP: ${settings.dest_ip}
   DEST_PORT: ${settings.dest_port}
   ACTION: ${settings.action}
