@@ -8,4 +8,4 @@ globals:
 
 onInstall:
   cmd[cp]: |
-    ip a | grep -q  '${globals.DEST_IP}' || { iptables -t nat ${globals.ACTION} PREROUTING -p tcp --dport ${globals.DEST_PORT} -j DNAT --to-destination ${globals.DEST_IP}:${globals.DEST_PORT}; iptables ${globals.ACTION} FORWARD -p tcp -j ACCEPT;  iptables -t nat ${globals.ACTION} POSTROUTING -d ${globals.DEST_PORT} -j MASQUERADE; }
+    echo "ip a | grep -q  '${globals.DEST_IP}' || { iptables -t nat ${globals.ACTION} PREROUTING -p tcp --dport ${globals.DEST_PORT} -j DNAT --to-destination ${globals.DEST_IP}:${globals.DEST_PORT}; iptables ${globals.ACTION} FORWARD -p tcp -j ACCEPT;  iptables -t nat ${globals.ACTION} POSTROUTING -d ${globals.DEST_PORT} -j MASQUERADE; }"
