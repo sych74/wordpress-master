@@ -31,6 +31,12 @@ onAfterClone:
   envName: ${event.response.env.envName}
   settings:
     new_domain: ${event.response.env.domain}
+    
+onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
+  install: https://raw.githubusercontent.com/sych74/wordpress-master/master/addon/Domain.jps?_r=${fn.random}
+  settings:
+    new_domain: ${event.params.settings.customDomains}
+    protocol: https
 
 onInstall:
   - setGlobals:
