@@ -3,6 +3,7 @@ name: Load Balancer setup script
 description: This script for Load Balancer configurations
 
 onInstall:
-  - if (/litespeed/.test("${nodes.bl.nodeType}")):
-      - wget https://raw.githubusercontent.com/sych74/wordpress-master/master/configs/lb/litespeed/jelCache.xml -O /var/www/conf/jelastic.xml
-      - sudo jem service restart
+  - if (/litespeed/.test("${nodes.bl.nodeType}")): 
+    cmd [bl]: |-
+      wget https://raw.githubusercontent.com/sych74/wordpress-master/master/configs/lb/litespeed/jelCache.xml -O /var/www/conf/jelastic.xml;
+      sudo jem service restart
