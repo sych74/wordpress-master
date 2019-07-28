@@ -8,6 +8,7 @@ globals:
   ENV_SLAVE: ${settings.ENV_SLAVE}
   
 skipNodeEmails: true
+ssl: true
 nodes:
   - nodeType: ${globals.CP_NODE_TYPE}
     count: 1
