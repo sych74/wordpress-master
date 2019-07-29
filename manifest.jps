@@ -311,7 +311,7 @@ actions:
         CDN_URL: ${globals.PROTOCOL}://${settings.envName}-${response.response.partnerCode}.cdn.edgeport.net/
         SUCCESS: success-cdn
         EMAIL: cdn
-    - install: ${baseUrl}/scripts/installCDN.jps
+    - install: ${baseUrl}/scripts/setupCDN.jps
       envName: ${settings.envName}
       settings:
         PATH: ${baseUrl}
