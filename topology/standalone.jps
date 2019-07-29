@@ -3,9 +3,8 @@ jpsVersion: '1.1'
 name: WordPress Standalone
 
 globals:
+  PATH: ${settings.PATH}
   CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
-  ENV_MASTER: ${settings.ENV_MASTER}
-  ENV_SLAVE: ${settings.ENV_SLAVE}
   
 skipNodeEmails: true
 ssl: true
@@ -33,40 +32,11 @@ onAfterClone:
   settings:
     new_domain: ${event.response.env.domain}
     
-onBeforeInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
-  - if ("${globals.ENV_SLAVE}"):
-    - api: jelastic.env.control.GetEnvInfo
-      envName: ${globals.ENV_MASTER}
-    - forEach(response.nodes):
-        if (${@i.ismaster} && '${@i.nodeGroup}' == 'cp'):
-          - setGlobals:
-              MASTER-IP: ${@i.intIP}
-    - install: https://raw.githubusercontent.com/sych74/wordpress-master/master/scripts/redirectManage.jps?_r=${fn.random}
-      envName: ${globals.ENV_SLAVE}
-      envGroups: ${response.envGroups}
-      settings:
-        targetGroup: cp
-        dest_ip: ${globals.MASTER-IP}
-        dest_port: 80
-        action: -I
-
-onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
-  
-  - log: -------- ${${event.params.settings.customDomains} ------
-  - install: https://raw.githubusercontent.com/sych74/wordpress-master/master/addon/Domain.jps?_r=${fn.random}
+onAfterInstallAddon [nodeGroup:cp, id:cdn]:
+  - install: ${globals.PATH}/scripts/installCDN.jps
     settings:
-      new_domain: ${event.params.settings.customDomains}
-      protocol: https
-
-  - if ("${globals.ENV_SLAVE}"):
-    - install: https://raw.githubusercontent.com/sych74/wordpress-master/master/scripts/redirectManage.jps?_r=${fn.random}
-      envName: ${globals.ENV_SLAVE}
-      envGroups: ${response.envGroups}
-      settings:
-        targetGroup: cp
-        dest_ip: ${globals.MASTER-IP}
-        dest_port: 80
-        action: -D
+      PATH: ${globals.PATH}
+      TARGET_NODE_ID: ${globals.masterCP-ID0}
 
 onInstall:
   - setGlobals:
@@ -84,16 +54,16 @@ onInstall:
     user: root  
   
   - log: Wordpress CLI Installation
-  - install: ${baseUrl}../scripts/WP-CLI.jps?_r=${fn.random}
+  - install: ${globals.PATH}/scripts/WP-CLI.jps?_r=${fn.random}
     settings:
       TARGET_NODES: cp
    
   - log: App Server Configuration
-  - install: ${baseUrl}../scripts/setup-CP.jps?_r=${fn.random}
+  - install: ${globals.PATH}/scripts/setup-CP.jps?_r=${fn.random}
     settings:
       TARGET_NODES: cp
 
   - log: Site Configuration
-  - install: ${baseUrl}../scripts/setup-SITES.jps?_r=${fn.random}
+  - install: ${globals.PATH}/scripts/setup-SITES.jps?_r=${fn.random}
     settings:
       TARGET_NODES: cp
