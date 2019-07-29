@@ -4,14 +4,14 @@ description: This script for Edgeport CDN configurations
 
 globals:
   PATH: ${settings.PATH}
-  CDN_URL: ${settings.CDN_URL}
-  TARGET_NODE_ID: ${settings.TARGET_NODE_ID}
+  CDN_URL: ${settings.CDN_URL:false}
+  TARGET_NODE_ID: ${nodes.cp.master.id}
 
 onInstall:
   - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
-  - if (!${settings.CDN_URL}):
+  - if (!${globals.CDN_URL}):
       setGlobals:
-        CDN_URL: http://${settings.envName}-${response.response.partnerCode}.cdn.edgeport.net/
+        CDN_URL: http://${env.envName}-${response.response.partnerCode}.cdn.edgeport.net/
 
   - cmd[${globals.TARGET_NODE_ID}]: |-
       wget ${globals.PATH}/scripts/WPCache.sh?_r=${fn.random} -O ~/bin/WPCache.sh &>> /var/log/run.log
