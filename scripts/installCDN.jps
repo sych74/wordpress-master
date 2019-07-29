@@ -8,7 +8,12 @@ globals:
   TARGET_NODE_ID: ${settings.TARGET_NODE_ID}
 
 onInstall:
-  cmd[${globals.TARGET_NODE_ID}]: |-
-    wget ${globals.PATH}/scripts/WPCache.sh?_r=${fn.random} -O ~/bin/WPCache.sh &>> /var/log/run.log
-    wget ${globals.PATH}/scripts/checkCdnContent.txt?_r=${fn.random} -O ~/bin/checkCdnContent.txt &>> /var/log/run.log
-    bash ~/bin/WPCache.sh --edgeportCDN true --CDN_URL ${globals.CDN_URL}
+  - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
+  - if (!${settings.CDN_URL}):
+      setGlobals:
+        CDN_URL: http://${settings.envName}-${response.response.partnerCode}.cdn.edgeport.net/
+
+  - cmd[${globals.TARGET_NODE_ID}]: |-
+      wget ${globals.PATH}/scripts/WPCache.sh?_r=${fn.random} -O ~/bin/WPCache.sh &>> /var/log/run.log
+      wget ${globals.PATH}/scripts/checkCdnContent.txt?_r=${fn.random} -O ~/bin/checkCdnContent.txt &>> /var/log/run.log
+      bash ~/bin/WPCache.sh --edgeportCDN true --CDN_URL ${globals.CDN_URL}
