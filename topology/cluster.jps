@@ -98,7 +98,6 @@ onAfterInstallAddon [nodeGroup:cp, id:cdn]:
   - install: ${globals.PATH}/scripts/setupCDN.jps
     settings:
       PATH: ${globals.PATH}
-      TARGET_NODE_ID: ${nodes.cp.master.id}
 
 onInstall:
   - log: Auto Scaling Triggers
