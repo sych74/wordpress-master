@@ -33,10 +33,10 @@ onAfterClone:
     new_domain: ${event.response.env.domain}
     
 onAfterInstallAddon [nodeGroup:cp, id:cdn]:
-  - install: ${globals.PATH}/scripts/installCDN.jps
+  - install: ${globals.PATH}/scripts/setupCDN.jps
     settings:
       PATH: ${globals.PATH}
-      TARGET_NODE_ID: ${globals.masterCP-ID0}
+      TARGET_NODE_ID: cp
 
 onInstall:
   - setGlobals:
