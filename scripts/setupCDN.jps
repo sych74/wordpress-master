@@ -5,7 +5,7 @@ description: This script for Edgeport CDN configurations
 globals:
   PATH: ${settings.PATH}
   CDN_URL: ${settings.CDN_URL:false}
-  TARGET_NODE_ID: ${settings.TARGET_NODE_ID}
+  TARGET_NODE_ID: ${settings.TARGET_NODE_ID:${nodes.cp.master.id}}
 
 onInstall:
   - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
