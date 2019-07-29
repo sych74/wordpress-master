@@ -8,8 +8,6 @@ globals:
   BL_NODE_TYPE: ${settings.BL_NODE_TYPE}
   APP_CONFIGS_PATH: ${settings.APP_CONFIGS_PATH}
   REGION: ${settings.REGION}
-  ENV_MASTER: ${settings.ENV_MASTER}
-  ENV_SLAVE: ${settings.ENV_SLAVE}
   SCALING_LOAD_GROWTH: ${settings.loadGrowth}
   
 skipNodeEmails: true
