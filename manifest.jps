@@ -98,9 +98,11 @@ actions:
             loggerName: ${globals.envName1}
             envGroups: ${response.envGroups}
             region: ${globals.region1}
-            displayName: WP ${settings.topology} ${globals.region1}
+            displayName: WP ${settings.topology} MASTER
             settings:
               PATH: ${baseUrl}
+              MASTER_ENV: ${globals.envName1}
+              SLAVE_ENV: ${globals.envName2}
               CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
               BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
               APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
@@ -114,10 +116,12 @@ actions:
             loggerName: ${globals.envName2}
             envGroups: ${response.envGroups}
             region: ${globals.region2}
-            displayName: WP ${settings.topology} ${globals.region2}
+            displayName: WP ${settings.topology} SLAVE
             settings:
               PATH: ${baseUrl}
               CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
+              MASTER_ENV: ${globals.envName1}
+              SLAVE_ENV: ${globals.envName2}
               BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
               APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
               REGION: ${globals.region2}
