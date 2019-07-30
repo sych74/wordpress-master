@@ -4,6 +4,8 @@ name: WordPress Cluster
 
 globals:
   PATH: ${settings.PATH}
+  MASTER_ENV: ${settings.MASTER_ENV:false}
+  SLAVE_ENV: ${settings.SLAVE_ENV:false}
   CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
   BL_NODE_TYPE: ${settings.BL_NODE_TYPE}
   APP_CONFIGS_PATH: ${settings.APP_CONFIGS_PATH}
@@ -98,6 +100,44 @@ onAfterInstallAddon [nodeGroup:cp, id:cdn]:
   - install: ${globals.PATH}/scripts/setupCDN.jps
     settings:
       PATH: ${globals.PATH}
+      
+onBeforeInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
+  - if ("${globals.SLAVE_ENV}"):
+    - api: jelastic.env.control.GetEnvInfo
+      envName: ${globals.MASTER_ENV}
+    - forEach(response.nodes):
+        if (${@i.ismaster} && '${@i.nodeGroup}' == 'bl'):
+          - setGlobals:
+              MASTER-IP: ${@i.intIP}
+    - install: ${globals.PATH}/scripts/redirectManage.jps?_r=${fn.random}
+      envName: ${globals.SLAVE_ENV}
+      envGroups: ${response.envGroups}
+      settings:
+        targetGroup: bl
+        dest_ip: ${globals.MASTER-IP}
+        dest_port: 80
+        action: -I
+
+onAfterInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
+  - if ("${globals.SLAVE_ENV}"):
+    - api: jelastic.env.control.GetEnvInfo
+      envName: ${globals.MASTER_ENV}
+    - forEach(response.nodes):
+        if (${@i.ismaster} && '${@i.nodeGroup}' == 'bl'):
+          - setGlobals:
+              MASTER-IP: ${@i.intIP}
+    - install: ${globals.PATH}/scripts/redirectManage.jps?_r=${fn.random}
+      envName: ${globals.SLAVE_ENV}
+      envGroups: ${response.envGroups}
+      settings:
+        targetGroup: bl
+        dest_ip: ${globals.MASTER-IP}
+        dest_port: 80
+        action: -D
+
+onAfterBindSSL:
+  log: ------- BIND SSL ----------
+
 
 onInstall:
   - log: Auto Scaling Triggers
