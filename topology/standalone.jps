@@ -4,10 +4,11 @@ name: WordPress Standalone
 
 globals:
   PATH: ${settings.PATH}
+  MASTER_ENV: ${settings.MASTER_ENV:false}
+  SLAVE_ENV: ${settings.SLAVE_ENV:false}
   CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
   
 skipNodeEmails: true
-ssl: true
 nodes:
   - nodeType: ${globals.CP_NODE_TYPE}
     count: 1
@@ -21,13 +22,13 @@ nodes:
       SERVER_WEBROOT: /var/www/webroot/ROOT
 
 onAfterMigrate:
-  install: https://raw.githubusercontent.com/sych74/wordpress-master/master/addon/Domain.jps?_r=${fn.random}
+  install: ${globals.PATH}/addon/Domain.jps?_r=${fn.random}
   envName: ${event.response.env.envName}
   settings:
     new_domain: ${event.response.env.domain}
     
 onAfterClone:
-  install: https://raw.githubusercontent.com/sych74/wordpress-master/master/addon/Domain.jps?_r=${fn.random}
+  install: ${globals.PATH}/addon/Domain.jps?_r=${fn.random}
   envName: ${event.response.env.envName}
   settings:
     new_domain: ${event.response.env.domain}
@@ -36,6 +37,45 @@ onAfterInstallAddon [nodeGroup:cp, id:cdn]:
   - install: ${globals.PATH}/scripts/setupCDN.jps
     settings:
       PATH: ${globals.PATH}
+      
+      
+onBeforeInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
+  - if ("${globals.SLAVE_ENV}"):
+    - api: jelastic.env.control.GetEnvInfo
+      envName: ${globals.MASTER_ENV}
+    - forEach(response.nodes):
+        if (${@i.ismaster} && '${@i.nodeGroup}' == 'cp'):
+          - setGlobals:
+              MASTER-IP: ${@i.intIP}
+    - install: ${globals.PATH}/scripts/redirectManage.jps?_r=${fn.random}
+      envName: ${globals.SLAVE_ENV}
+      envGroups: ${response.envGroups}
+      settings:
+        targetGroup: cp
+        dest_ip: ${globals.MASTER-IP}
+        dest_port: 80
+        action: -I
+
+onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
+  - if ("${globals.SLAVE_ENV}"):
+    - api: jelastic.env.control.GetEnvInfo
+      envName: ${globals.MASTER_ENV}
+    - forEach(response.nodes):
+        if (${@i.ismaster} && '${@i.nodeGroup}' == 'cp'):
+          - setGlobals:
+              MASTER-IP: ${@i.intIP}
+    - install: ${globals.PATH}/scripts/redirectManage.jps?_r=${fn.random}
+      envName: ${globals.SLAVE_ENV}
+      envGroups: ${response.envGroups}
+      settings:
+        targetGroup: cp
+        dest_ip: ${globals.MASTER-IP}
+        dest_port: 80
+        action: -D
+
+onAfterBindSSL:
+  log: ------- BIND SSL ----------
+  
 
 onInstall:
   - setGlobals:
