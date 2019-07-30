@@ -298,12 +298,26 @@ actions:
           customDomains: ${settings.envName}.${globals.REGION-0}
 
   install-edgeport-CDN:
-    - install: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
-      envName: ${this.envName}
-      nodeGroup: ${globals.cdn-nodeGroup}
-      skipEmail: true
-      settings:
-        masterEnv: ${this.masterEnv:}
+    - if (${globals.MU_REGIONS}):
+        install: 
+          - jps: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
+            envName: ${settings.envName}
+            nodeGroup: ${globals.cdn-nodeGroup}
+            skipEmail: true
+            settings:
+              masterEnv: ${this.masterEnv:}
+            
+          - jps: ${baseUrl}/scripts/dummyCDN.jps
+            envName: ${settings.envName}-1
+            nodeGroup: ${globals.cdn-nodeGroup}            
+
+    - if (!${globals.MU_REGIONS}):
+      - install: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
+        envName: ${settings.envName}
+        nodeGroup: ${globals.cdn-nodeGroup}
+        skipEmail: true
+        settings:
+          masterEnv: ${this.masterEnv:}    
 
   configure-edgeport-CDN:
     - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
