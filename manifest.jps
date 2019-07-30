@@ -284,7 +284,7 @@ actions:
             nodeGroup: ${globals.le-nodeGroup}
             skipEmail: true
 
-          - jps: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
+          - jps: ${baseUrl}/scripts/dummyLE.jps?_r=${fn.random}
             envName: ${settings.envName}-1
             nodeGroup: ${globals.le-nodeGroup}
             skipEmail: true
@@ -294,8 +294,6 @@ actions:
         envName: ${settings.envName}
         nodeGroup: ${globals.le-nodeGroup}
         skipEmail: true
-        settings:
-          customDomains: ${settings.envName}.${globals.REGION-0}
 
   install-edgeport-CDN:
     - if (${globals.MU_REGIONS}):
@@ -307,7 +305,7 @@ actions:
             settings:
               masterEnv: ${this.masterEnv:}
             
-          - jps: ${baseUrl}/scripts/dummyCDN.jps
+          - jps: ${baseUrl}/scripts/dummyCDN.jps?_r=${fn.random}
             envName: ${settings.envName}-1
             nodeGroup: ${globals.cdn-nodeGroup}            
 
