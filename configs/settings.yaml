@@ -10,6 +10,14 @@ fields:
   filter:
     isActive: true
 
+- caption: Environment
+  type: envname
+  name: envName
+  dependsOn: region
+  randomName: true
+  showFullDomain: false
+  required: true
+
 - type: list
   caption: Topology
   name: topology
@@ -26,14 +34,6 @@ fields:
     anchor: l
     hideOnOver: false
     showDelay: 0
-
-- caption: Environment
-  type: envname
-  name: envName
-  dependsOn: region
-  randomName: true
-  showFullDomain: false
-  required: true
 
 - caption: Scaling Load Growth
   type: list
