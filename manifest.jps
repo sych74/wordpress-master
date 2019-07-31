@@ -341,7 +341,7 @@ actions:
         mode: subdir
 
   install-wordpress:
-    - install: ${baseUrl}/scripts/install-WP.jps
+    - install: ${baseUrl}/scripts/installWP.jps
       envName: ${settings.envName}
       settings:
         db_host: ${globals.DB_HOST}
@@ -357,8 +357,8 @@ actions:
       nodeId: ${globals.masterCP-ID0}
       commandList:
         - command: |-
-            wget ${baseUrl}/scripts/WPCache.sh?_r=${fn.random} -O ~/bin/WPCache.sh &>> /var/log/run.log
-            bash ~/bin/WPCache.sh --pgcache true --objectcache true --REDIS_HOST 127.0.0.1
+            wget ${baseUrl}/scripts/setupWP.sh?_r=${fn.random} -O ~/bin/setupWP.sh &>> /var/log/run.log
+            bash ~/bin/setupWP.sh --pgcache true --objectcache true --REDIS_HOST 127.0.0.1
 
 success:
   email: success/email/${settings.topology}/${globals.CLUSTER_TYPE}-${globals.EMAIL}.md?_r=${fn.random}
