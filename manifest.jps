@@ -287,6 +287,9 @@ actions:
             envName: ${settings.envName}
             nodeGroup: ${globals.le-nodeGroup}
             skipEmail: true
+            settings:
+              customDomains: ${settings.envName}.${globals.REGION-0}
+
 
           - jps: ${baseUrl}/scripts/dummyLE.jps?_r=${fn.random}
             envName: ${settings.envName}-1
@@ -298,6 +301,9 @@ actions:
         envName: ${settings.envName}
         nodeGroup: ${globals.le-nodeGroup}
         skipEmail: true
+        settings:
+          customDomains: ${settings.envName}.${globals.REGION-0}
+
 
   install-edgeport-CDN:
     - if (${globals.MU_REGIONS}):
