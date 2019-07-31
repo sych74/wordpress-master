@@ -168,14 +168,14 @@ onInstall:
       nodeId: cp
 
   - log: Site Configuration
-  - install: ${globals.PATH}/scripts/setup-SITES.jps?_r=${fn.random}
+  - install: ${globals.PATH}/scripts/setupSITES.jps?_r=${fn.random}
     settings:
       TARGET_NODES: cp
 
 actions:
   setupNode:
     - log: App Server Configuration
-    - install: ${globals.PATH}/scripts/setup-CP.jps?_r=${fn.random}
+    - install: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
       settings:  
         TARGET_NODES: ${this.nodeId}
 
