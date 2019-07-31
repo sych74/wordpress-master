@@ -84,6 +84,9 @@ onInstall:
       
   - log: Clean Webroot Directory
   - cmd[cp]: rm -rf ${SERVER_WEBROOT}/*
+  
+  - log: Create symlink for SSL sharing
+  - cmd[cp]: ln -s /var/lib/jelastic/SSL/ /var/www/webroot/SSL
     
   - log: DB Setup
   - cmd[cp]: |-
