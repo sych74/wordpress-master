@@ -120,7 +120,7 @@ if (group.groupType == 'trial') {
         type: "checkbox",
         name: "mu-addon",
         caption: muText,
-        value: true
+        value: false
     });
 }
 
