@@ -38,7 +38,7 @@ fields:
 - caption: Scaling Load Growth
   type: list
   name: loadGrowth
-  default: medium
+  default: slow
   required: true
   values:        
     - value: slow
@@ -48,7 +48,7 @@ fields:
     - value: fast
       caption: Fast
              
-- caption: Additions
+- caption: Advanced features
   type: displayfield
   name: displayfield
   markup:
