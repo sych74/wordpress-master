@@ -86,7 +86,10 @@ onInstall:
   - cmd[cp]: rm -rf ${SERVER_WEBROOT}/*
   
   - log: Create symlink for SSL sharing
-  - cmd[cp]: ln -s /var/lib/jelastic/SSL/ /var/www/webroot/SSL
+  - cmd[cp]: |-
+      [ -d "/var/lib/jelastic/SSL" ] && rm -rf /var/lib/jelastic/SSL
+      mkdir -p /var/www/webroot/SSL/ && ln -s /var/www/webroot/SSL /var/lib/jelastic/SSL
+    user: root
     
   - log: DB Setup
   - cmd[cp]: |-
