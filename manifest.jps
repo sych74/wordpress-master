@@ -57,6 +57,7 @@ onInstall:
   - if (${globals.MU_REGIONS}):
       - setup-replication
       - setup-synchronization
+      - install-DUMMY-addons
 
   - if (${settings.le-addon:false}):
       - install-LE-addon
@@ -280,52 +281,33 @@ actions:
           password: ${globals.SYNC_PASS}
           delay: 10
 
-  install-LE-addon:
-    - if (${globals.MU_REGIONS}):
-        install:
-          - jps: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
-            envName: ${settings.envName}
-            nodeGroup: ${globals.le-nodeGroup}
-            skipEmail: true
-            settings:
-              customDomains: ${settings.envName}.${globals.REGION-0}
-
-
-          - jps: ${baseUrl}/scripts/dummyLE.jps?_r=${fn.random}
-            envName: ${settings.envName}-1
-            nodeGroup: ${globals.le-nodeGroup}
-            skipEmail: true
-
-    - if (!${globals.MU_REGIONS}):
-        install: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
-        envName: ${settings.envName}
+  install-DUMMY-addons:
+    install:
+      - jps: ${baseUrl}/scripts/dummyLE.jps?_r=${fn.random}
+        envName: ${settings.envName}-1
         nodeGroup: ${globals.le-nodeGroup}
         skipEmail: true
-        settings:
-          customDomains: ${settings.envName}.${globals.REGION-0}
 
+      - jps: ${baseUrl}/scripts/dummyCDN.jps?_r=${fn.random}
+        envName: ${settings.envName}-1
+        nodeGroup: ${globals.cdn-nodeGroup}            
+        skipEmail: true
+
+  install-LE-addon:
+    install: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
+    envName: ${settings.envName}
+    nodeGroup: ${globals.le-nodeGroup}
+    skipEmail: true
+    settings:
+      customDomains: ${settings.envName}.${globals.REGION-0}
 
   install-edgeport-CDN:
-    - if (${globals.MU_REGIONS}):
-        install: 
-          - jps: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
-            envName: ${settings.envName}
-            nodeGroup: ${globals.cdn-nodeGroup}
-            skipEmail: true
-            settings:
-              masterEnv: ${this.masterEnv:}
-            
-          - jps: ${baseUrl}/scripts/dummyCDN.jps?_r=${fn.random}
-            envName: ${settings.envName}-1
-            nodeGroup: ${globals.cdn-nodeGroup}            
-
-    - if (!${globals.MU_REGIONS}):
-      - install: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
-        envName: ${settings.envName}
-        nodeGroup: ${globals.cdn-nodeGroup}
-        skipEmail: true
-        settings:
-          masterEnv: ${this.masterEnv:}    
+    install: https://raw.githubusercontent.com/edgeport/cdn/master/manifest.yml?_r=${fn.random}
+    envName: ${settings.envName}
+    nodeGroup: ${globals.cdn-nodeGroup}
+    skipEmail: true
+    settings:
+      masterEnv: ${this.masterEnv:}    
 
   configure-edgeport-CDN:
     - script: return jelastic.dev.scripting.Eval("c05ffa5b45628a2a0c95467ebca8a0b4", session, "cdn.info", {partnerCode:1})
