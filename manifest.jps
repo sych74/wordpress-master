@@ -65,8 +65,8 @@ onInstall:
             
       - if ('${settings.topology}' == 'cluster'):
         SSL-sharing:
-          nodeId: "${this.nodeId}"
-          sourceNodeId: "${this.sourceNodeId}"
+          nodeId: "${globals.masterBL-ID1}"
+          sourceNodeId: "${globals.masterBL-ID0}"
 
   - if (${settings.le-addon:false}):
       - install-LE-addon
@@ -222,6 +222,10 @@ actions:
             - if ('${@i.nodeGroup}' == 'storage'):
                 - setGlobals:
                     storage-IP${this.index}: ${@i.address}
+
+            - if ('${@i.nodeGroup}' == 'bl'):
+                - setGlobals:
+                    masterBL-ID${this.index}: ${@i.id}
 
             - if (${@i.ismaster} && '${@i.nodeGroup}' == 'cp'):
                 - setGlobals:
