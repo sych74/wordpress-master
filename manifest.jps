@@ -335,16 +335,6 @@ actions:
         CDN_URL: ${globals.CDN_URL}
         TARGET_NODE_ID: ${globals.masterCP-ID0}
 
-  SSL-sharing:
-    api: env.file.AddMountPointById
-    name: Sharing SSL certificates
-    path: /var/lib/jelastic/SSL/
-    sourcePath: /var/lib/jelastic/SSL/
-    protocol: nfs
-    nodeId: "${this.nodeId}"
-    sourceNodeId: "${this.sourceNodeId}"
-    readOnly: false
-
   configure-MU:
     - install: ${baseUrl}/addon/WPMU.jps
       envName: ${settings.envName}
