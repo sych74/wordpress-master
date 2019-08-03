@@ -58,15 +58,6 @@ onInstall:
       - setup-replication
       - setup-synchronization
       - install-DUMMY-addons
-      - if ('${settings.topology}' == 'standalone'):
-        SSL-sharing:
-          nodeId: "${globals.masterCP-ID1}"
-          sourceNodeId: "${globals.masterCP-ID0}"
-            
-      - if ('${settings.topology}' == 'cluster'):
-        SSL-sharing:
-          nodeId: "${globals.masterBL-ID1}"
-          sourceNodeId: "${globals.masterBL-ID0}"
 
   - if (${settings.le-addon:false}):
       - install-LE-addon
@@ -307,7 +298,7 @@ actions:
         skipEmail: true
 
   install-LE-addon:
-    install: https://github.com/jelastic-jps/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
+    install: https://github.com/sych74/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
     envName: ${settings.envName}
     nodeGroup: ${globals.le-nodeGroup}
     skipEmail: true
