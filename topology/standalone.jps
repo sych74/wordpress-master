@@ -84,13 +84,7 @@ onInstall:
       
   - log: Clean Webroot Directory
   - cmd[cp]: rm -rf ${SERVER_WEBROOT}/*
-  
-  - log: Create symlink for SSL sharing
-  - cmd[cp]: |-
-      [ -d "/var/lib/jelastic/SSL" ] && rm -rf /var/lib/jelastic/SSL
-      mkdir -p /var/www/webroot/SSL/ && ln -s /var/www/webroot/SSL /var/lib/jelastic/SSL
-    user: root
-    
+      
   - log: DB Setup
   - cmd[cp]: |-
       sed -i "s/server-id.*/server-id = ${nodes.cp.master.id}/" /etc/my.cnf
