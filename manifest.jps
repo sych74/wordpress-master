@@ -58,6 +58,15 @@ onInstall:
       - setup-replication
       - setup-synchronization
       - install-DUMMY-addons
+      - if ('${settings.topology}' == 'standalone'):
+        SSL-sharing:
+          nodeId: "${globals.masterCP-ID1}"
+          sourceNodeId: "${globals.masterCP-ID0}"
+            
+      - if ('${settings.topology}' == 'cluster'):
+        SSL-sharing:
+          nodeId: "${this.nodeId}"
+          sourceNodeId: "${this.sourceNodeId}"
 
   - if (${settings.le-addon:false}):
       - install-LE-addon
@@ -321,6 +330,16 @@ actions:
         PATH: ${baseUrl}
         CDN_URL: ${globals.CDN_URL}
         TARGET_NODE_ID: ${globals.masterCP-ID0}
+
+  SSL-sharing:
+    api: env.file.AddMountPointById
+    name: Sharing SSL certificates
+    path: /var/lib/jelastic/SSL/
+    sourcePath: /var/lib/jelastic/SSL/
+    protocol: nfs
+    nodeId: "${this.nodeId}"
+    sourceNodeId: "${this.sourceNodeId}"
+    readOnly: false
 
   configure-MU:
     - install: ${baseUrl}/addon/WPMU.jps
