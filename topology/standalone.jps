@@ -64,7 +64,8 @@ onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
       nodeId: ${globals.SLAVE-ID}
       userName: root
       commandList: 
-        command: jem ssl install
+        - command: |-
+            jem service restart
 
 onAfterBindSSL:
   - if ("${globals.SLAVE_ENV}"):
@@ -78,7 +79,8 @@ onAfterBindSSL:
       envName: ${globals.SLAVE_ENV}
       nodeId: ${globals.SLAVE-ID}
       commandList: 
-        command: sudo jem service restart
+        - command: |-
+            jem service restart
 
 onInstall:
   - setGlobals:
