@@ -57,7 +57,6 @@ onInstall:
   - if (${globals.MU_REGIONS}):
       - setup-replication
       - setup-synchronization
-      - install-DUMMY-addons
 
   - if (${settings.le-addon:false}):
       - install-LE-addon
@@ -120,9 +119,9 @@ actions:
             displayName: WP ${settings.topology} SLAVE
             settings:
               PATH: ${baseUrl}
-              CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
               MASTER_ENV: ${globals.envName1}
               SLAVE_ENV: ${globals.envName2}
+              CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
               BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
               APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
               REGION: ${globals.region2}
@@ -138,6 +137,7 @@ actions:
         displayName: WP ${settings.topology}
         settings:
           PATH: ${baseUrl}
+          MASTER_ENV: ${globals.envName1}
           CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
           BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
           APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
@@ -284,18 +284,6 @@ actions:
           address:  ${globals.storage-IP0}
           password: ${globals.SYNC_PASS}
           delay: 10
-
-  install-DUMMY-addons:
-    install:
-      - jps: ${baseUrl}/scripts/dummyLE.jps?_r=${fn.random}
-        envName: ${settings.envName}-1
-        nodeGroup: ${globals.le-nodeGroup}
-        skipEmail: true
-
-      - jps: ${baseUrl}/scripts/dummyCDN.jps?_r=${fn.random}
-        envName: ${settings.envName}-1
-        nodeGroup: ${globals.cdn-nodeGroup}            
-        skipEmail: true
 
   install-LE-addon:
     install: https://github.com/sych74/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
