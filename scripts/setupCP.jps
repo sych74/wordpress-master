@@ -10,6 +10,7 @@ globals:
 
 onInstall:
   - if (/lemp/.test("${nodes.cp.nodeType}") || /nginxphp/.test("${nodes.cp.nodeType}")):
+      - nginx-le
       - nginx
       - redis: 
           PHP_CONFIG_PATH: /etc/php.d
