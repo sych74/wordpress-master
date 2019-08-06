@@ -1,13 +1,28 @@
 type: install
-name: add redirect
+name: Add LE Redirect
 
 globals:
-  DEST_IP: ${settings.dest_ip}
-  DEST_PORT: ${settings.dest_port}
-  ACTION: ${settings.action}
-  TARGET_GROUP: ${settings.targetGroup}
+  PATH: ${settings.PATH}
+  TOPOLOGY: ${settings.TOPOLOGY:false}
+  MASTER_ENV: ${settings.MASTER_ENV:false}
+  SLAVE_ENV: ${settings.SLAVE_ENV:false}
+  MASTER_IP: ${settings.dest_ip}
 
 onInstall:
-  - cmd[${globals.TARGET_GROUP}]:
-      ip a | grep -q  '${globals.DEST_IP}' || { iptables -t nat ${globals.ACTION} PREROUTING -p tcp --dport ${globals.DEST_PORT} -j DNAT --to-destination ${globals.DEST_IP}:${globals.DEST_PORT}; iptables ${globals.ACTION} FORWARD -p tcp -j ACCEPT;  iptables -t nat ${globals.ACTION} POSTROUTING -d ${globals.DEST_PORT} -j MASQUERADE; }
-    user: root
+  - if ('${globals.TOPOLOGY}' == 'standalone'):
+    - if (/lemp/.test("${nodes.cp.nodeType}" && ${globals.MASTER_ENV}):
+      cmd[cp]: |-
+        mkdir /var/www/letsencrypt/ && touch /var/www/letsencrypt/webroot        
+        wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/nossl.conf
+        wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/ssl.conf.disabled
+        wget ${globals.PATH}/configs/cp/nginx/le-master.conf -O /etc/nginx/le.conf
+        jem service restart
+      user: root
+    - if (/lemp/.test("${nodes.cp.nodeType}" && ${globals.SLAVE_ENV}):
+      cmd[cp]: |-
+        wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/nossl.conf
+        wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/ssl.conf.disabled
+        wget ${globals.PATH}/configs/cp/nginx/le-slave.conf -O /etc/nginx/le.conf
+        sed -i "s/MASTER_ENV_IP/${globals.MASTER_IP}" /etc/nginx/le.conf
+        jem service restart
+      user: root
