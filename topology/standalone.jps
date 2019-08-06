@@ -44,12 +44,13 @@ onBeforeInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
     - api: jelastic.env.control.GetEnvInfo
       envName: ${globals.SLAVE_ENV}
     - forEach(response.nodes):
-        if ('${@i.nodeGroup}' == 'cp'):
+        - if ('${@i.nodeGroup}' == 'cp'):
           - setGlobals:
               SLAVE-ID: ${@i.id}
-    - env.binder.AttachExtIp:
-        envName: ${globals.SLAVE_ENV}
-        nodeid: ${globals.SLAVE-ID}
+          - if (/extIPs/.test("${@i.extIPs}")):
+              - env.binder.AttachExtIp:
+                  envName: ${globals.SLAVE_ENV}
+                  nodeid: ${globals.SLAVE-ID}
 
 onAfterInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
   - if ("${globals.SLAVE_ENV}"):
