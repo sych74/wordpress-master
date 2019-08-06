@@ -23,6 +23,6 @@ onInstall:
         wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/nossl.conf
         wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/ssl.conf.disabled
         wget ${globals.PATH}/configs/cp/nginx/le-slave.conf -O /etc/nginx/le.conf
-        sed -i "s/MASTER_ENV_IP/${globals.MASTER_IP}" /etc/nginx/le.conf
+        sed -i "s/MASTER_ENV_IP/${globals.MASTER_IP}/g" /etc/nginx/le.conf
         jem service restart
       user: root
