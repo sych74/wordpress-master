@@ -38,41 +38,6 @@ onAfterInstallAddon [nodeGroup:cp, id:cdn]:
     settings:
       PATH: ${globals.PATH}
       
-      
-onBeforeInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
-  - if ("${globals.SLAVE_ENV}"):
-    - api: jelastic.env.control.GetEnvInfo
-      envName: ${globals.SLAVE_ENV}
-    - forEach(response.nodes):
-        - if ('${@i.nodeGroup}' == 'cp'):
-          - setGlobals:
-              SLAVE-ID: ${@i.id}
-          - if (/extIPs/.test("${@i.extIPs}")):
-              - env.binder.AttachExtIp:
-                  envName: ${globals.SLAVE_ENV}
-                  nodeid: ${globals.SLAVE-ID}
-    - api: jelastic.env.control.GetEnvInfo
-      envName: ${globals.MASTER_ENV}
-    - forEach(response.nodes):
-        - if ('${@i.nodeGroup}' == 'cp'):
-          - setGlobals:
-              MASTER_IP: ${@i.intIP}
-    - install: 
-      - jps: ${globals.PATH}/scripts/redirectManage.jps?_r=${fn.random}
-        envName: ${globals.MASTER_ENV}
-        settings:
-          PATH: ${globals.PATH}
-          TOPOLOGY: standalone
-          MASTER_ENV: true
-  
-      - jps: ${globals.PATH}/scripts/redirectManage.jps?_r=${fn.random}
-        envName: ${globals.SLAVE_ENV}
-        settings:
-          PATH: ${globals.PATH}
-          TOPOLOGY: standalone
-          SLAVE_ENV: true
-          MASTER_IP: ${globals.MASTER_IP}
-
 onAfterBindSSL:
   - if ("${globals.SLAVE_ENV}"):
     - api: jelastic.env.control.GetEnvInfo
