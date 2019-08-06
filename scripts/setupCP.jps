@@ -40,6 +40,6 @@ actions:
   nginx-le:
     - cmd[${globals.TARGET_NODES}]: |-
         mkdir -p /var/www/letsencrypt/.well-known/acme-challenge && touch /var/www/letsencrypt/webroot;
-        wget ${globals.PATH}/configs/cp/nginx/le-${globals.ENV}.conf -O /etc/nginx/le.conf
+        wget ${globals.PATH}/configs/cp/nginx/le-${globals.ENV_TYPE}.conf -O /etc/nginx/le.conf
       user: root
         
