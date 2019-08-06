@@ -13,15 +13,15 @@ onInstall:
     - if (/lemp/.test("${nodes.cp.nodeType}" && ${globals.MASTER_ENV}):
       cmd[cp]: |-
         mkdir /var/www/letsencrypt/ && touch /var/www/letsencrypt/webroot        
-        wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/nossl.conf
-        wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/ssl.conf.disabled
+        wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/conf.d/nossl.conf
+        wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/conf.d/ssl.conf.disabled
         wget ${globals.PATH}/configs/cp/nginx/le-master.conf -O /etc/nginx/le.conf
         jem service restart
       user: root
     - if (/lemp/.test("${nodes.cp.nodeType}" && ${globals.SLAVE_ENV}):
       cmd[cp]: |-
-        wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/nossl.conf
-        wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/ssl.conf.disabled
+        wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/conf.d/nossl.conf
+        wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/conf.d/ssl.conf.disabled
         wget ${globals.PATH}/configs/cp/nginx/le-slave.conf -O /etc/nginx/le.conf
         sed -i "s/MASTER_ENV_IP/${globals.MASTER_IP}/g" /etc/nginx/le.conf
         jem service restart
