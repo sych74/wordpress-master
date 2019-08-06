@@ -6,7 +6,7 @@ globals:
   TOPOLOGY: ${settings.TOPOLOGY:false}
   MASTER_ENV: ${settings.MASTER_ENV:false}
   SLAVE_ENV: ${settings.SLAVE_ENV:false}
-  MASTER_IP: ${settings.dest_ip}
+  MASTER_IP: ${settings.MASTER_IP}
 
 onInstall:
   - if ('${globals.TOPOLOGY}' == 'standalone'):
