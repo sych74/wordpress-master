@@ -3,6 +3,9 @@ name: CP setup script
 description: This script for AppServer configurations
 
 globals:
+  PATH: ${settings.PATH}
+  ENV_STATUS: ${settings.PATH}
+  TOPOLOGY: ${settings.TOPOLOGY}
   TARGET_NODES: ${settings.TARGET_NODES}
 
 onInstall:
@@ -18,18 +21,23 @@ onInstall:
 actions:
   redis:
     - cmd[${globals.TARGET_NODES}]: |-
-        wget ${baseUrl}../configs/cp/php/wp-upload.ini -O ${this.PHP_CONFIG_PATH}/wp-upload.ini
-        wget ${baseUrl}../configs/cp/php/opcache.ini -O ${this.PHP_CONFIG_PATH}/opcache.ini
-        wget ${baseUrl}../configs/cp/php/extensions.ini -O ${this.PHP_CONFIG_PATH}/extensions.ini
-        wget ${baseUrl}../configs/cp/php/redis.ini -O ${this.PHP_CONFIG_PATH}/redis.ini
+        wget ${globals.PATH}/configs/cp/php/wp-upload.ini -O ${this.PHP_CONFIG_PATH}/wp-upload.ini
+        wget ${globals.PATH}/configs/cp/php/opcache.ini -O ${this.PHP_CONFIG_PATH}/opcache.ini
+        wget ${globals.PATH}/configs/cp/php/extensions.ini -O ${this.PHP_CONFIG_PATH}/extensions.ini
+        wget ${globals.PATH}/configs/cp/php/redis.ini -O ${this.PHP_CONFIG_PATH}/redis.ini
         sudo jem service restart
 
   nginx:
     - cmd[${globals.TARGET_NODES}]: |-
         mkdir -p /var/www/webroot/SITES_ENABLED;
         ln -s /var/www/webroot/SITES_ENABLED /etc/nginx/conf.d/SITES_ENABLED;
-        wget ${baseUrl}../configs/cp/nginx/nginx.conf -O /etc/nginx/nginx.conf
-        wget ${baseUrl}../configs/cp/nginx/nossl.conf -O /etc/nginx/conf.d/nossl.conf
-        wget ${baseUrl}../configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/conf.d/ssl.conf.disabled
-        wget ${baseUrl}../configs/cp/nginx/fastcgi_cache.conf -O /etc/nginx/conf.d/fastcgi_cache.conf
-        sudo jem service restart
+        wget ${globals.PATH}/configs/cp/nginx/nginx.conf -O /etc/nginx/nginx.conf
+        wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/conf.d/nossl.conf
+        wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/conf.d/ssl.conf.disabled
+        wget ${globals.PATH}/configs/cp/nginx/fastcgi_cache.conf -O /etc/nginx/conf.d/fastcgi_cache.conf        
+        
+  nginx-le:
+    - cmd[${globals.TARGET_NODES}]: |-
+        mkdir -p /var/www/letsencrypt/.well-known/acme-challenge && touch /var/www/letsencrypt/webroot;
+        wget ${globals.PATH}/configs/cp/nginx/le-${globals.ENV}.conf -O /etc/nginx/le.conf
+        
