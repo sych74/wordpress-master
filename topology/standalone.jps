@@ -4,8 +4,8 @@ name: WordPress Standalone
 
 globals:
   PATH: ${settings.PATH}
-  MASTER_ENV: ${settings.MASTER_ENV:false}
-  SLAVE_ENV: ${settings.SLAVE_ENV:false}
+  MASTER_ENV: ${settings.MASTER_ENV}
+  SLAVE_ENV: ${settings.SLAVE_ENV}
   CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
   
 skipNodeEmails: true
@@ -73,10 +73,29 @@ onInstall:
     settings:
       TARGET_NODES: cp
    
-  - log: App Server Configuration
-  - install: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
-    settings:
-      TARGET_NODES: cp
+  - log: App Server Configuration and dummy addons for slave
+  - if ('${env.envName}' == '${globals.MASTER_ENV}'):
+    - install: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
+      settings:
+        PATH: ${globals.PATH}
+        ENV_STATUS: master
+        TARGET_NODES: cp
+
+  - if ('${env.envName}' == '${globals.SLAVE_ENV}'):
+      install: 
+        - jps: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
+          settings:
+            PATH: ${globals.PATH}
+            ENV_STATUS: slave
+            TARGET_NODES: cp
+
+        - jps: ${baseUrl}/scripts/dummyLE.jps?_r=${fn.random}
+          nodeGroup: cp
+          skipEmail: true
+
+        - jps: ${baseUrl}/scripts/dummyCDN.jps?_r=${fn.random}        
+          nodeGroup: cp            
+          skipEmail: true
 
   - log: Site Configuration
   - install: ${globals.PATH}/scripts/setupSITES.jps?_r=${fn.random}
