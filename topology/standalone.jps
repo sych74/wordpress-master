@@ -78,7 +78,7 @@ onInstall:
     - install: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
       settings:
         PATH: ${globals.PATH}
-        ENV_STATUS: master
+        ENV_TYPE: master
         TARGET_NODES: cp
 
   - if ('${env.envName}' == '${globals.SLAVE_ENV}'):
@@ -86,7 +86,7 @@ onInstall:
         - jps: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
           settings:
             PATH: ${globals.PATH}
-            ENV_STATUS: slave
+            ENV_TYPE: slave
             TARGET_NODES: cp
 
         - jps: ${globals.PATH}/scripts/dummyLE.jps?_r=${fn.random}
