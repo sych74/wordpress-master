@@ -89,11 +89,11 @@ onInstall:
             ENV_STATUS: slave
             TARGET_NODES: cp
 
-        - jps: ${baseUrl}/scripts/dummyLE.jps?_r=${fn.random}
+        - jps: ${globals.PATH}/scripts/dummyLE.jps?_r=${fn.random}
           nodeGroup: cp
           skipEmail: true
 
-        - jps: ${baseUrl}/scripts/dummyCDN.jps?_r=${fn.random}        
+        - jps: ${globals.PATH}/scripts/dummyCDN.jps?_r=${fn.random}        
           nodeGroup: cp            
           skipEmail: true
 
