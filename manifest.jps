@@ -60,11 +60,11 @@ onInstall:
       - if ('${settings.topology}' == 'standalone'):
         - addSSLVolume:
             nodeId: ${globals.masterCP-ID1}
-            sourcenodeId: ${globals.masterCP-ID0}
+            sourceNodeId: ${globals.masterCP-ID0}
       - if ('${settings.topology}' == 'cluster'):
         - addSSLVolume:
             nodeId: ${globals.masterBL-ID1}
-            sourcenodeId: ${globals.masterBL-ID0}
+            sourceNodeId: ${globals.masterBL-ID0}
 
   - if (${settings.le-addon:false}):
       - install-LE-addon
