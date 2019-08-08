@@ -294,15 +294,15 @@ actions:
           delay: 10
 
   addSSLVolume:
-    api: env.file.AddMountPointById
-    envName: ${globals.envName2}
-    nodeId: ${this.nodeId}
-    path: /var/lib/jelastic/SSL
-    protocol: nfs
-    sourcePath: /var/lib/jelastic/SSL
-    sourceNodeId: ${this.sourceNodeId}
-    name: SSL mount
-    readOnly: true
+    - api: env.file.AddMountPointById
+      envName: ${globals.envName2}
+      nodeId: ${this.nodeId}
+      path: /var/lib/jelastic/SSL
+      protocol: nfs
+      sourcePath: /var/lib/jelastic/SSL
+      sourceNodeId: ${this.sourceNodeId}
+      name: SSL mount
+      readOnly: true
 
   install-LE-addon:
     install: https://github.com/sych74/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
