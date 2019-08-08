@@ -57,6 +57,16 @@ onInstall:
   - if (${globals.MU_REGIONS}):
       - setup-replication
       - setup-synchronization
+      - if ('${settings.topology}' == 'standalone'):
+        - addSSLVolume:
+            settings:
+              nodeId: ${globals.masterCP-ID1}
+              sourcenodeId: ${globals.masterCP-ID0}
+      - if ('${settings.topology}' == 'cluster'):
+        - addSSLVolume:
+            settings:
+              nodeId: ${globals.masterBL-ID1}
+              sourcenodeId: ${globals.masterBL-ID0}
 
   - if (${settings.le-addon:false}):
       - install-LE-addon
@@ -284,6 +294,16 @@ actions:
           address:  ${globals.storage-IP0}
           password: ${globals.SYNC_PASS}
           delay: 10
+
+  addSSLVolume:
+    api: env.file.AddMountPointById
+    nodeId: ${settings.nodeId}
+    path: /var/lib/jelastic/SSL
+    protocol: nfs
+    sourcePath: /var/lib/jelastic/SSL
+    sourceNodeId: ${this.backupNodeId}
+    name: SSL mount
+    readOnly: true
 
   install-LE-addon:
     install: https://github.com/sych74/lets-encrypt/blob/master/manifest.jps?_r=${fn.random}
