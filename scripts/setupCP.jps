@@ -10,14 +10,15 @@ globals:
 
 onInstall:
   - if (/lemp/.test("${nodes.cp.nodeType}") || /nginxphp/.test("${nodes.cp.nodeType}")):
-      - nginx-le
-      - nginx
-      - redis: 
-          PHP_CONFIG_PATH: /etc/php.d
+    - nginx-le
+    - nginx
+    - redis: 
+        PHP_CONFIG_PATH: /etc/php.d
 
   - if (/llsmp/.test("${nodes.cp.nodeType}") || /litespeed/.test("${nodes.cp.nodeType}")):
-      - redis: 
-         PHP_CONFIG_PATH: /usr/local/lsws/lsphp73/etc/php.d
+    - litespeed-le
+    - redis: 
+        PHP_CONFIG_PATH: /usr/local/lsws/lsphp73/etc/php.d
 
 actions:
   redis:
@@ -42,4 +43,10 @@ actions:
         mkdir -p /var/www/letsencrypt/.well-known/acme-challenge && touch /var/www/letsencrypt/webroot;
         wget ${globals.PATH}/configs/cp/nginx/le-${globals.ENV_TYPE}.conf -O /etc/nginx/le.conf
       user: root
-        
+
+  litespeed-le:
+    - cmd[${globals.TARGET_NODES}]: |-
+        mkdir -p /var/www/letsencrypt/.well-known/acme-challenge && touch /var/www/letsencrypt/webroot;
+        wget ${globals.PATH}/configs/cp/litespeed/httpd_config.xml -O /var/www/conf/httpd_config.xml
+        wget ${globals.PATH}/configs/cp/litespeed/vhconf-${globals.ENV_TYPE}.xml -O /var/www/vhconf.xml
+      user: root
