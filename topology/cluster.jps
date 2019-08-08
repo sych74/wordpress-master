@@ -20,13 +20,6 @@ nodes:
     nodeGroup: bl
     scalingMode: STATEFUL
     displayName: Load balancer
-    volumes:
-      - "/var/lib/jelastic/SSL"
-    volumeMounts:
-      "/var/lib/jelastic/SSL":
-        readOnly: false
-        sourcePath: "/data/SSL"
-        sourceNodeGroup: storage
 
   - nodeType: ${globals.CP_NODE_TYPE}
     count: 1
