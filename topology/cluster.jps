@@ -131,7 +131,6 @@ onAfterInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
 onAfterBindSSL:
   log: ------- BIND SSL ----------
 
-
 onInstall:
   - log: Auto Scaling Triggers
   - script: "${globals.PATH}/scripts/addTriggers.js"
@@ -156,6 +155,30 @@ onInstall:
       db_pass: "${globals.DB_PASS}"
       custom_conf: "${globals.PATH}/configs/sqldb/wordpress.cnf"
     nodeGroup: sqldb
+
+  - log: App Server Configuration and dummy addons for slave
+  - if ('${env.envName}' == '${globals.MASTER_ENV}'):
+    - install: ${globals.PATH}/scripts/webrootModeForLE.jps?_r=${fn.random}
+      settings:
+        PATH: ${globals.PATH}
+        ENV_TYPE: master
+        TOPOLOGY: standalone
+
+  - if ('${env.envName}' == '${globals.SLAVE_ENV}'):
+      install: 
+        - jps: ${globals.PATH}/scripts/webrootModeForLE.jps?_r=${fn.random}
+          settings:
+            PATH: ${globals.PATH}
+            ENV_TYPE: slave
+            TOPOLOGY: standalone
+
+        - jps: ${globals.PATH}/scripts/dummyLE.jps?_r=${fn.random}
+          nodeGroup: bl
+          skipEmail: true
+
+        - jps: ${globals.PATH}/scripts/dummyCDN.jps?_r=${fn.random}        
+          nodeGroup: bl            
+          skipEmail: true
 
   - setupNode:
       nodeId: cp
