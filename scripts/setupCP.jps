@@ -4,19 +4,15 @@ description: This script for AppServer configurations
 
 globals:
   PATH: ${settings.PATH}
-  ENV_TYPE: ${settings.ENV_TYPE}
-  TOPOLOGY: ${settings.TOPOLOGY}
   TARGET_NODES: ${settings.TARGET_NODES}
 
 onInstall:
   - if (/lemp/.test("${nodes.cp.nodeType}") || /nginxphp/.test("${nodes.cp.nodeType}")):
-    - nginx-le
     - nginx
     - redis: 
         PHP_CONFIG_PATH: /etc/php.d
 
   - if (/llsmp/.test("${nodes.cp.nodeType}") || /litespeed/.test("${nodes.cp.nodeType}")):
-    - litespeed-le
     - redis: 
         PHP_CONFIG_PATH: /usr/local/lsws/lsphp73/etc/php.d
 
@@ -37,16 +33,3 @@ actions:
         wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/conf.d/nossl.conf
         wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/conf.d/ssl.conf.disabled
         wget ${globals.PATH}/configs/cp/nginx/fastcgi_cache.conf -O /etc/nginx/conf.d/fastcgi_cache.conf        
-        
-  nginx-le:
-    - cmd[${globals.TARGET_NODES}]: |-
-        mkdir -p /var/www/letsencrypt/.well-known/acme-challenge && touch /var/www/letsencrypt/webroot;
-        wget ${globals.PATH}/configs/cp/nginx/le-${globals.ENV_TYPE}.conf -O /etc/nginx/le.conf
-      user: root
-
-  litespeed-le:
-    - cmd[${globals.TARGET_NODES}]: |-
-        mkdir -p /var/www/letsencrypt/.well-known/acme-challenge && touch /var/www/letsencrypt/webroot;
-        wget ${globals.PATH}/configs/cp/litespeed/httpd_config.xml -O /var/www/conf/httpd_config.xml
-        wget ${globals.PATH}/configs/cp/litespeed/vhconf-${globals.ENV_TYPE}.xml -O /var/www/vhconf.xml
-      user: root
