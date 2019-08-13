@@ -6,7 +6,6 @@ globals:
   PATH: ${settings.PATH}
   ENV_TYPE: ${settings.ENV_TYPE}
   TOPOLOGY: ${settings.TOPOLOGY}
-  TARGET_NODES: ${settings.TARGET_NODES}
 
 onInstall:
   - if ('${globals.TOPOLOGY}' == 'standalone'):
