@@ -28,3 +28,14 @@ nodes:
     scalingMode: STATELESS
     displayName: AppServer
     
+onInstall:
+
+  - api: env.file.AddMountPointById
+    nodeId: ${nodes.bl}
+    path: /var/www/letsencrypt/
+    protocol: nfs
+    sourcePath: /var/www/letsencrypt/
+    sourceNodeId: ${nodes.cp.master.id}
+    name: LetsEncypt webroot mount
+    readOnly: false
+
