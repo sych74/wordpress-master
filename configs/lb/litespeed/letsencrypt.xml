@@ -9,6 +9,7 @@
           <type>proxy</type>
           <workerGroupEnabled>1</workerGroupEnabled>
           <sourceIP>ANY</sourceIP>
+          <defaultTargetPort>80</defaultTargetPort>            
           <maxConns>20</maxConns>
           <initTimeout>60</initTimeout>
           <retryTimeout>0</retryTimeout>
