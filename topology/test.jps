@@ -1,0 +1,30 @@
+jpsType: install
+jpsVersion: '1.1'
+name: WordPress Cluster
+
+globals:
+  PATH: ${settings.PATH}
+  MASTER_ENV: ${settings.MASTER_ENV:false}
+  SLAVE_ENV: ${settings.SLAVE_ENV:false}
+  CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
+  BL_NODE_TYPE: ${settings.BL_NODE_TYPE}
+  APP_CONFIGS_PATH: ${settings.APP_CONFIGS_PATH}
+  REGION: ${settings.REGION}
+  SCALING_LOAD_GROWTH: ${settings.loadGrowth}
+  
+skipNodeEmails: true
+nodes:
+  - nodeType: ${globals.BL_NODE_TYPE}
+    count: 1
+    cloudlets: 8
+    nodeGroup: bl
+    scalingMode: STATEFUL
+    displayName: Load balancer
+
+  - nodeType: ${globals.CP_NODE_TYPE}
+    count: 1
+    cloudlets: 8
+    nodeGroup: cp
+    scalingMode: STATELESS
+    displayName: AppServer
+    
