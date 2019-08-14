@@ -5,5 +5,7 @@ description: This script for Load Balancer configurations
 onInstall:
   - if (/litespeed/.test("${nodes.bl.nodeType}")): 
     cmd [bl]: |-
-      wget https://raw.githubusercontent.com/sych74/wordpress-master/master/configs/lb/litespeed/jelCache.xml -O /var/www/conf/jelastic.xml;
+      wget https://raw.githubusercontent.com/sych74/wordpress-master/master/configs/lb/litespeed/jelastic.xml -O /var/www/conf/jelastic.xml
+      wget https://raw.githubusercontent.com/sych74/wordpress-master/master/configs/lb/litespeed/letsencrypt.xml -O /tmp/letsencrypt.xml
+      sed -i '/<loadBalancerList>/r /tmp/letsencrypt.xml' /var/www/conf/lslbd_config.xml
       sudo jem service restart
