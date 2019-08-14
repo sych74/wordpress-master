@@ -192,7 +192,8 @@ actions:
   setupNode:
     - log: App Server Configuration
     - install: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
-      settings:  
+      settings:
+        PATH: ${globals.PATH}
         TARGET_NODES: ${this.nodeId}
 
     - log: Wordpress CLI Installation
