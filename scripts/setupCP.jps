@@ -13,6 +13,7 @@ onInstall:
         PHP_CONFIG_PATH: /etc/php.d
 
   - if (/llsmp/.test("${nodes.cp.nodeType}") || /litespeed/.test("${nodes.cp.nodeType}")):
+    - litespeed
     - redis: 
         PHP_CONFIG_PATH: /usr/local/lsws/lsphp73/etc/php.d
 
@@ -33,3 +34,7 @@ actions:
         wget ${globals.PATH}/configs/cp/nginx/nossl.conf -O /etc/nginx/conf.d/nossl.conf
         wget ${globals.PATH}/configs/cp/nginx/ssl.conf.disabled -O /etc/nginx/conf.d/ssl.conf.disabled
         wget ${globals.PATH}/configs/cp/nginx/fastcgi_cache.conf -O /etc/nginx/conf.d/fastcgi_cache.conf        
+
+  litespeed:
+    - cmd[${globals.TARGET_NODES}]: |-
+        wget ${globals.PATH}/configs/cp/litespeed/vhconf.xml -O /var/www/webroot/vhconf.xml 
