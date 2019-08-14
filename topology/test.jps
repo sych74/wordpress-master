@@ -31,7 +31,7 @@ nodes:
 onInstall:
 
   - api: env.file.AddMountPointById
-    nodeId: ${nodes.bl}
+    nodeId: ${nodes.bl.master.id}
     path: /var/www/letsencrypt/
     protocol: nfs
     sourcePath: /var/www/letsencrypt/
