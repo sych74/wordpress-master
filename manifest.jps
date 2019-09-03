@@ -32,7 +32,7 @@ onInstall:
       - if ('${settings.topology}' == 'cluster'):
           setGlobals:
             CP_NODE_TYPE: nginxphp-dockerized
-            CP_NODE_TAG: 1.16.1-php-7.3.8
+            CP_NODE_TAG: 1.16.0-php-7.3.8
             BL_NODE_TYPE: nginx-dockerized
             BL_NODE_TAG: 1.16.0
             APP_CONFIGS_PATH: /etc/nginx/conf.d/SITES_ENABLED
