@@ -113,6 +113,7 @@ actions:
               MASTER_ENV: ${globals.envName1}
               SLAVE_ENV: ${globals.envName2}
               CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
+              CP_NODE_TAG: ${globals.CP_NODE_TAG}
               BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
               APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
               REGION: ${globals.region1}
@@ -131,6 +132,7 @@ actions:
               MASTER_ENV: ${globals.envName1}
               SLAVE_ENV: ${globals.envName2}
               CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
+              CP_NODE_TAG: ${globals.CP_NODE_TAG}
               BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
               APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
               REGION: ${globals.region2}
@@ -148,6 +150,7 @@ actions:
           PATH: ${baseUrl}
           MASTER_ENV: ${globals.envName1}
           CP_NODE_TYPE: ${globals.CP_NODE_TYPE}
+          CP_NODE_TAG: ${globals.CP_NODE_TAG}
           BL_NODE_TYPE: ${globals.BL_NODE_TYPE}
           APP_CONFIGS_PATH: ${globals.APP_CONFIGS_PATH}
           REGION: ${globals.region1}
