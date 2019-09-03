@@ -39,6 +39,7 @@ onInstall:
       - if ('${settings.topology}' == 'standalone'):
           setGlobals:
             CP_NODE_TYPE: llsmp
+            CP_NODE_TAG: 5.4.1-php-7.3.7
             APP_CONFIGS_PATH: /var/www/webroot/TMP
 
       - if ('${settings.topology}' == 'cluster'):
