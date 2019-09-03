@@ -7,10 +7,12 @@ globals:
   MASTER_ENV: ${settings.MASTER_ENV}
   SLAVE_ENV: ${settings.SLAVE_ENV}
   CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
+  CP_NODE_TAG: ${settings.CP_NODE_TAG}
   
 skipNodeEmails: true
 nodes:
   - nodeType: ${globals.CP_NODE_TYPE}
+    tag: ${globals.CP_NODE_TAG}
     count: 1
     cloudlets: 16
     nodeGroup: cp
@@ -85,21 +87,8 @@ onInstall:
       TARGET_NODES: cp
    
   - log: App Server Configuration and dummy addons for slave
-  - if ('${env.envName}' == '${globals.MASTER_ENV}'):
-    - install: ${globals.PATH}/scripts/webrootModeForLE.jps?_r=${fn.random}
-      settings:
-        PATH: ${globals.PATH}
-        ENV_TYPE: master
-        TOPOLOGY: standalone
-
   - if ('${env.envName}' == '${globals.SLAVE_ENV}'):
-      install: 
-        - jps: ${globals.PATH}/scripts/webrootModeForLE.jps?_r=${fn.random}
-          settings:
-            PATH: ${globals.PATH}
-            ENV_TYPE: slave
-            TOPOLOGY: standalone
-
+      install:
         - jps: ${globals.PATH}/scripts/dummyLE.jps?_r=${fn.random}
           nodeGroup: cp
           skipEmail: true
@@ -109,12 +98,9 @@ onInstall:
           skipEmail: true
 
   - log: App Server Configuration
-  - install: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
+  - install: https://raw.githubusercontent.com/sych74/templates/master/config.jps?_r=${fn.random}
     settings:
-      PATH: ${globals.PATH}
-      TARGET_NODES: cp
-
-  - log: Site Configuration
-  - install: ${globals.PATH}/scripts/setupSITES.jps?_r=${fn.random}
-    settings:
-      TARGET_NODES: cp
+      targetGroup: cp
+      targetNodes: cp
+      optimization: wordpress
+      
