@@ -7,9 +7,9 @@ globals:
   MASTER_ENV: ${settings.MASTER_ENV:false}
   SLAVE_ENV: ${settings.SLAVE_ENV:false}
   CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
-  CP_NODE_TAG: ${globals.CP_NODE_TAG}
+  CP_NODE_TAG: ${settings.CP_NODE_TAG}
   BL_NODE_TYPE: ${settings.BL_NODE_TYPE}
-  BL_NODE_TAG: ${globals.BL_NODE_TAG}
+  BL_NODE_TAG: ${settings.BL_NODE_TAG}
   APP_CONFIGS_PATH: ${settings.APP_CONFIGS_PATH}
   REGION: ${settings.REGION}
   SCALING_LOAD_GROWTH: ${settings.loadGrowth}
