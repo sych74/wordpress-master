@@ -67,6 +67,13 @@ onAfterBindSSL:
             jem ssl install
 
 onInstall:
+  - log: OPTIMIZATION
+  - install: https://raw.githubusercontent.com/sych74/templates/master/config.jps?_r=${fn.random}
+    settings:
+      targetGroup: cp
+      targetNodes: cp
+      optimization: wordpress
+ 
   - setGlobals:
       DB_USER: ${settings.db_user:jelastic-[fn.random]}
       DB_PASS: ${settings.db_pass:[fn.password(10)]}
@@ -96,11 +103,4 @@ onInstall:
         - jps: ${globals.PATH}/scripts/dummyCDN.jps?_r=${fn.random}        
           nodeGroup: cp            
           skipEmail: true
-
-  - log: App Server Configuration
-  - install: https://raw.githubusercontent.com/sych74/templates/master/config.jps?_r=${fn.random}
-    settings:
-      targetGroup: cp
-      targetNodes: cp
-      optimization: wordpress
-      
+     
