@@ -161,13 +161,6 @@ onInstall:
     nodeGroup: sqldb
 
   - log: App Server Configuration and dummy addons for slave
-  - if ('${env.envName}' == '${globals.MASTER_ENV}'):
-    - install: ${globals.PATH}/scripts/webrootModeForLE.jps?_r=${fn.random}
-      settings:
-        PATH: ${globals.PATH}
-        ENV_TYPE: master
-        TOPOLOGY: standalone
-
   - if ('${env.envName}' == '${globals.SLAVE_ENV}'):
       install: 
         - jps: ${globals.PATH}/scripts/webrootModeForLE.jps?_r=${fn.random}
@@ -187,18 +180,14 @@ onInstall:
   - setupNode:
       nodeId: cp
 
-  - log: Site Configuration
-  - install: ${globals.PATH}/scripts/setupSITES.jps?_r=${fn.random}
-    settings:
-      TARGET_NODES: cp
-
 actions:
   setupNode:
-    - log: App Server Configuration
-    - install: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
+    - log: OPTIMIZATION
+    - install: https://raw.githubusercontent.com/sych74/templates/master/config.jps?_r=${fn.random}
       settings:
-        PATH: ${globals.PATH}
-        TARGET_NODES: ${this.nodeId}
+        targetGroup: cp
+        targetNodes: ${this.nodeId}
+        optimization: wordpress
 
     - log: Wordpress CLI Installation
     - install: ${globals.PATH}/scripts/WP-CLI.jps?_r=${fn.random}
