@@ -26,6 +26,7 @@ onInstall:
       - if ('${settings.topology}' == 'standalone'):
         setGlobals:
           CP_NODE_TYPE: lemp
+          CP_NODE_TAG: 1.16.0-php-7.3.5
           APP_CONFIGS_PATH: /etc/nginx/conf.d/SITES_ENABLED
 
       - if ('${settings.topology}' == 'cluster'):
