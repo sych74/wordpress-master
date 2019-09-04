@@ -16,6 +16,6 @@ onInstall:
       setGlobals:
         TARGET_NODE_ID: ${nodes.cp.master.id}
   - cmd[${globals.TARGET_NODE_ID}]: |-
-      wget ${globals.PATH}/scripts/WPCache.sh?_r=${fn.random} -O ~/bin/WPCache.sh &>> /var/log/run.log
+      wget ${globals.PATH}/scripts/setupWP.sh?_r=${fn.random} -O ~/bin/setupWP.sh &>> /var/log/run.log
       wget ${globals.PATH}/scripts/checkCdnContent.txt?_r=${fn.random} -O ~/bin/checkCdnContent.txt &>> /var/log/run.log
-      bash ~/bin/WPCache.sh --edgeportCDN true --CDN_URL ${globals.CDN_URL}
+      bash ~/bin/setupWP.sh --edgeportCDN true --CDN_URL ${globals.CDN_URL}
