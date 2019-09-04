@@ -287,7 +287,7 @@ actions:
 
   setup-synchronization:
     install:
-      - jps: https://raw.githubusercontent.com/dzotic91-ukr/file-sync/master/manifest.jps?_r=${fn.random}
+      - jps: https://raw.githubusercontent.com/jelastic-jps/file-sync/master/manifest.jps?_r=${fn.random}
         envName: ${settings.envName}
         nodeGroup: ${globals.lsync-nodeGroup}
         skipEmail: true
@@ -297,7 +297,7 @@ actions:
           password: ${globals.SYNC_PASS}
           delay: 10
 
-      - jps: https://raw.githubusercontent.com/dzotic91-ukr/file-sync/master/manifest.jps?_r=${fn.random}
+      - jps: https://raw.githubusercontent.com/jelastic-jps/file-sync/master/manifest.jps?_r=${fn.random}
         envName: ${settings.envName}-1
         nodeGroup: ${globals.lsync-nodeGroup}
         skipEmail: true
