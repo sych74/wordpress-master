@@ -98,42 +98,36 @@ onAfterInstallAddon [nodeGroup:cp, id:cdn]:
     settings:
       PATH: ${globals.PATH}
       
-onBeforeInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
-  - if ("${globals.SLAVE_ENV}"):
+onBeforeInstallAddon [nodeGroup:cp, id:letsencrypt-ssl-addon]:
+  - if ('${globals.SLAVE_ENV}' != 'false'):
     - api: jelastic.env.control.GetEnvInfo
-      envName: ${globals.MASTER_ENV}
-    - forEach(response.nodes):
-        if (${@i.ismaster} && '${@i.nodeGroup}' == 'bl'):
-          - setGlobals:
-              MASTER-IP: ${@i.intIP}
-    - install: ${globals.PATH}/scripts/redirectManage.jps?_r=${fn.random}
       envName: ${globals.SLAVE_ENV}
-      envGroups: ${response.envGroups}
-      settings:
-        targetGroup: bl
-        dest_ip: ${globals.MASTER-IP}
-        dest_port: 80
-        action: -I
-
-onAfterInstallAddon [nodeGroup:bl, id:letsencrypt-ssl-addon]:
-  - if ("${globals.SLAVE_ENV}"):
-    - api: jelastic.env.control.GetEnvInfo
-      envName: ${globals.MASTER_ENV}
     - forEach(response.nodes):
-        if (${@i.ismaster} && '${@i.nodeGroup}' == 'bl'):
-          - setGlobals:
-              MASTER-IP: ${@i.intIP}
-    - install: ${globals.PATH}/scripts/redirectManage.jps?_r=${fn.random}
-      envName: ${globals.SLAVE_ENV}
-      envGroups: ${response.envGroups}
-      settings:
-        targetGroup: bl
-        dest_ip: ${globals.MASTER-IP}
-        dest_port: 80
-        action: -D
+        - if ('${@i.nodeGroup}' == 'bl'):
+          - env.binder.AttachExtIp:
+              envName: ${globals.SLAVE_ENV}
+              nodeid:  ${@i.id}
 
 onAfterBindSSL:
-  log: ------- BIND SSL ----------
+  - cmd[bl]: source /opt/letsencrypt/settings && echo $domain
+  - set:
+      domain: ${response.out}
+  - cmd[cp]: bash ~/bin/setupWP.sh --DOMAIN https://${this.domain}/
+
+  - if ('${globals.SLAVE_ENV}' != 'false'):
+    - api: jelastic.env.control.GetEnvInfo
+      envName: ${globals.SLAVE_ENV}
+    - forEach(response.nodes):
+        if ('${@i.nodeGroup}' == 'bl'):
+          - set:
+              SLAVE-ID: ${@i.id}
+    - env.control.ExecCmdById:
+      envName: ${globals.SLAVE_ENV}
+      nodeId: ${this.SLAVE-ID}
+      userName: root
+      commandList: 
+        - command: |-
+            jem ssl install
 
 onInstall:
   - log: Auto Scaling Triggers
