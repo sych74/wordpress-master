@@ -32,5 +32,5 @@ actions:
   nginxPurgeCache:
     - cmd[${globals.TARGET_NODE_ID}]: |-
         cd ${SERVER_WEBROOT};
-        wp plugin install ${baseUrl}../scripts/nginx-fastcgi-cache-purge.zip
-        wp plugin activate nginx-fastcgi-cache-purge
+        wp plugin install ${baseUrl}../scripts/nginx-fastcgi-cache-purge.zip --path=${SERVER_WEBROOT}
+        wp plugin activate nginx-fastcgi-cache-purge --path=${SERVER_WEBROOT}
