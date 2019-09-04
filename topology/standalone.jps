@@ -4,8 +4,8 @@ name: WordPress Standalone
 
 globals:
   PATH: ${settings.PATH}
-  MASTER_ENV: ${settings.MASTER_ENV}
-  SLAVE_ENV: ${settings.SLAVE_ENV}
+  MASTER_ENV: ${settings.MASTER_ENV:false}
+  SLAVE_ENV: ${settings.SLAVE_ENV:false}
   CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
   CP_NODE_TAG: ${settings.CP_NODE_TAG}
   
