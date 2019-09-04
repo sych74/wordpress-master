@@ -5,6 +5,7 @@ pgcache=false;
 objectcache=false;
 edgeportCDN=false;
 wpmu=false;
+DOMAIN=false;
 
 ARGUMENT_LIST=(
     "purge"
@@ -17,6 +18,7 @@ ARGUMENT_LIST=(
     "CDN_URL"
     "CDN_ORI"
     "MODE"
+    "DOMAIN"
 
 )
 
@@ -80,6 +82,11 @@ while [[ $# -gt 0 ]]; do
 
         --MODE)
             MODE=$2
+            shift 2
+            ;;
+
+        --DOMAIN)
+            DOMAIN=$2
             shift 2
             ;;
 
@@ -210,4 +217,15 @@ if [ $wpmu == 'true' ] ; then
           ${WP} plugin activate litespeed-cache --path=${SERVER_WEBROOT} &>> /var/log/run.log
           ;;
   esac
+fi
+
+if [ $DOMAIN != 'false' ] ; then
+	OLD_DOMAIN=$(${WP} option get siteurl --path=${SERVER_WEBROOT})
+	OLD_SHORT_DOMAIN=$(${WP} option get siteurl --path=${SERVER_WEBROOT} | cut -d'/' -f3)
+	NEW_SHORT_DOMAIN=$(echo $DOMAIN | cut -d'/' -f3)
+
+	${WP} search-replace "${OLD_DOMAIN}" "${DOMAIN}" --skip-columns=guid --all-tables --path=${SERVER_WEBROOT} &>> /var/log/run.log
+	${WP} search-replace "${OLD_SHORT_DOMAIN}" "${NEW_SHORT_DOMAIN}" --skip-columns=guid --all-tables --path=${SERVER_WEBROOT} &>> /var/log/run.log
+	${CACHE_FLUSH}  &>> /var/log/run.log
+	${WP} cache flush --path=${SERVER_WEBROOT} &>> /var/log/run.log
 fi
