@@ -257,13 +257,15 @@ actions:
     - install:
         - jps: https://raw.githubusercontent.com/sych74/mysql-cluster/master/scripts/setupMaster.jps 
           envName: ${settings.envName}
-          nodeId: ${globals.masterDB-ID0}
-          index: 0
+          settings:
+            nodeId: ${globals.masterDB-ID0}
+            index: 0
 
         - jps: https://raw.githubusercontent.com/sych74/mysql-cluster/master/scripts/setupMaster.jps 
           envName: ${settings.envName}-1
-          nodeId: ${globals.masterDB-ID1}
-          index: 1
+          settings:
+            nodeId: ${globals.masterDB-ID1}
+            index: 1
   
     - install: https://raw.githubusercontent.com/sych74/mysql-cluster/master/addons/regions-replication.jps?_r=${fn.random}
       envName: ${settings.envName}
