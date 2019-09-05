@@ -235,8 +235,9 @@ actions:
           masterEnv: ${this.masterEnv:}
 
   getTopologyNodes:
+    - envName: ${this.envName}
       script: |
-        var resp = jelastic.env.control.GetEnvInfo(this.envName);
+        var resp = jelastic.env.control.GetEnvInfo(envName, session);
         if (resp.result !== 0) return resp;
 
         var envNodes = resp.nodes, nodes = {};    
