@@ -7,7 +7,9 @@ globals:
   MASTER_ENV: ${settings.MASTER_ENV:false}
   SLAVE_ENV: ${settings.SLAVE_ENV:false}
   CP_NODE_TYPE: ${settings.CP_NODE_TYPE}
+  CP_NODE_TAG: ${settings.CP_NODE_TAG}
   BL_NODE_TYPE: ${settings.BL_NODE_TYPE}
+  BL_NODE_TAG: ${settings.BL_NODE_TAG}
   APP_CONFIGS_PATH: ${settings.APP_CONFIGS_PATH}
   REGION: ${settings.REGION}
   SCALING_LOAD_GROWTH: ${settings.loadGrowth}
@@ -15,6 +17,7 @@ globals:
 skipNodeEmails: true
 nodes:
   - nodeType: ${globals.BL_NODE_TYPE}
+    tag: ${globals.BL_NODE_TAG}
     count: 1
     cloudlets: 8
     nodeGroup: bl
@@ -22,30 +25,19 @@ nodes:
     displayName: Load balancer
 
   - nodeType: ${globals.CP_NODE_TYPE}
+    tag: ${globals.CP_NODE_TAG}
     count: 1
     cloudlets: 8
     nodeGroup: cp
     scalingMode: STATELESS
     displayName: AppServer
+
+  - nodeType: storage
+    cloudlets: 8
+    nodeGroup: storage
+    displayName: Storage
+    nodeGroupData:
+      validation:
+        maxCount: 1
+
     
-onInstall:
-
-  - api: env.file.AddMountPointById
-    nodeId: ${nodes.bl.master.id}
-    path: /var/www/letsencrypt/
-    protocol: nfs
-    sourcePath: /var/www/letsencrypt/
-    sourceNodeId: ${nodes.cp.master.id}
-    name: LetsEncypt webroot mount
-    readOnly: false
-
-  - setupNode:
-      nodeId: cp
-
-actions:
-  setupNode:
-    - log: App Server Configuration
-    - install: ${globals.PATH}/scripts/setupCP.jps?_r=${fn.random}
-      settings:
-        PATH: ${globals.PATH}
-        TARGET_NODES: ${this.nodeId}
