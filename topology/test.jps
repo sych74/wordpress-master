@@ -31,6 +31,26 @@ nodes:
     nodeGroup: cp
     scalingMode: STATELESS
     displayName: AppServer
+    volumes:
+      - /var/www/webroot/ROOT
+      - ${globals.APP_CONFIGS_PATH}
+      - /var/www/webroot/.cache
+    volumeMounts:
+      "/var/www/webroot/ROOT":
+        readOnly: false
+        sourcePath: "/data/ROOT"
+        sourceNodeGroup: storage
+      "${globals.APP_CONFIGS_PATH}":
+        readOnly: false
+        sourcePath: "/data/APP_CONFIGS"
+        sourceNodeGroup: storage
+      "/var/www/webroot/.cache":
+        readOnly: false
+        sourcePath: "/data/.cache"
+        sourceNodeGroup: storage
+    env:
+      SERVER_WEBROOT: /var/www/webroot/ROOT
+      REDIS_ENABLED: TRUE
 
   - nodeType: storage
     cloudlets: 8
